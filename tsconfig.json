@@ -25,10 +25,10 @@
     ]
   },
   "include": [
-    "./src/**/*.ts"
+    "./**/*.ts"
   ],
   "exclude": [
-    "./src/**/*.test.ts",
-    "./src/public/"
+    "./**/*.test.ts",
+    "./node_modules"
   ]
 }
