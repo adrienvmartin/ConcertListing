@@ -25,3 +25,5 @@ const EventSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+module.exports = Concert = mongoose.model('concert', EventSchema);

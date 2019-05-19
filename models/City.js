@@ -6,3 +6,5 @@ const CitySchema= new mongoose.Schema({
     required: true,
   },
 });
+
+module.exports = City = mongoose.model('city', CitySchema);

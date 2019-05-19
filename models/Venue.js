@@ -6,3 +6,5 @@ const VenueSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+module.exports = Venue = mongoose.model('venue', VenueSchema);

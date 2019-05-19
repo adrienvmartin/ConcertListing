@@ -9,3 +9,5 @@ const BandInstanceSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+module.exports = BandInstance = mongoose.model('bandInstance', BandInstanceSchema);

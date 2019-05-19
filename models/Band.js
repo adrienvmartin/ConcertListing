@@ -1,5 +1,7 @@
-import { Document, Schema, Model, model } from 'mongoose';
+const mongoose = require('mongoose');
 
-const BandSchema: Schema = new Schema({
+const BandSchema = new mongoose.Schema({
   name: String,
 });
+
+module.exports = Band = mongoose.model('band', BandSchema);
