@@ -19,3 +19,8 @@ export interface IUserAuth extends Request {
     date: Date,
   };
 }
+
+export interface IProfile extends Document {
+  user: IUser;
+  location: String;
+}
