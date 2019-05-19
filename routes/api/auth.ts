@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../../models/User';
-import { IUserAuth } from '../../utils/interfaces';
+import { User, IUserAuth } from '../../models/User';
 import {
   SERVER_ERROR_MSG,
   EXISTING_USER_MSG,

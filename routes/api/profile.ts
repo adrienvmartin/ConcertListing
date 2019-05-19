@@ -4,9 +4,8 @@ import {
   NO_PROFILE_MSG,
   STATUS_REQUIRED_MSG,
 } from '../../utils/constants';
-import { IUserAuth } from '../../utils/interfaces';
 import { Profile } from '../../models/Profile';
-import { User } from '../../models/User';
+import { User, IUserAuth } from '../../models/User';
 
 const express = require('express');
 const router = express.Router();

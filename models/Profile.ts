@@ -1,5 +1,10 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import { IProfile } from '../utils/interfaces';
+import { IUser } from './User';
+
+export interface IProfile extends Document {
+  user: IUser['_id'];
+  location: String;
+}
 
 const mongoose = require('mongoose');
 

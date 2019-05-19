@@ -1,5 +1,17 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import { IUser } from '../utils/interfaces';
+import { Request } from 'express';
+
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  avatar: string;
+  date: Date;
+}
+
+export interface IUserAuth extends Request {
+  user: IUser['_id'];
+}
 
 const UserSchema: Schema = new Schema({
   name: {
