@@ -28,5 +28,11 @@
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
+  },
+  "prettier": {
+      "trailingComma": "es5",
+      "tabWidth": 2,
+      "semi": false,
+      "singleQuote": true
   }
 }
