@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Request } from 'express';
 
 export interface IUser extends Document {
   name: string;
@@ -6,4 +7,8 @@ export interface IUser extends Document {
   password: string;
   avatar: string;
   date: Date;
+}
+
+export interface IUserAuth extends Request {
+  user: string;
 }

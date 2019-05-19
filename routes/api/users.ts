@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../../models/User';
+import { SERVER_ERROR_MSG, EXISTING_USER_MSG } from '../../utils/constants';
 
 const express = require('express');
 const router = express.Router();
@@ -33,7 +34,7 @@ router.post(
       let user = await User.findOne({ email });
 
       if (user) {
-        return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+        return res.status(400).json({ errors: [{ msg: EXISTING_USER_MSG }] });
       }
 
       const avatar = gravatar.url(email, {
@@ -71,7 +72,7 @@ router.post(
 
     } catch (err) {
       console.error(err);
-      res.status(500).send('Server error');
+      res.status(500).send(SERVER_ERROR_MSG);
     }
   }
 );
