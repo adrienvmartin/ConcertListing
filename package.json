@@ -12,7 +12,6 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.1.0",
-    "eslint": "^5.16.0",
     "express": "^4.17.0",
     "express-validator": "^5.3.1",
     "gravatar": "^1.8.0",
@@ -21,6 +20,7 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
+    "eslint": "^5.16.0",
     "nodemon": "^1.19.0"
   },
   "prettier": {
