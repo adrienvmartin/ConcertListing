@@ -1,6 +1,6 @@
-import { Document, Schema, Model, model } from 'mongoose';
+const mongoose = require('mongoose');
 
-const EventSchema: Schema = new Schema({
+const EventSchema = new mongoose.Schema({
   bands: {
     headliner: {
       type: Schema.Types.ObjectId,
@@ -25,4 +25,3 @@ const EventSchema: Schema = new Schema({
     required: true,
   },
 });
-

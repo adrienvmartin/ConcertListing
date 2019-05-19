@@ -1,10 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
-import { Request, Response, NextFunction } from 'express';
-import { IUserAuth } from '../models/User';
 import { NO_TOKEN_MSG, INVALID_TOKEN_MSG } from '../utils/constants';
 
-module.exports = (req: IUserAuth, res: Response, next: NextFunction) => {
+module.exports = (req, res, next) => {
   const token = req.header('x-auth-token');
 
   if (!token) {
