@@ -7,3 +7,4 @@ export const EXISTING_USER_MSG = 'User already exists';
 export const NO_PROFILE_MSG = 'There is no profile for this user';
 
 export const INVALID_CREDENTIALS_MSG = 'Invalid credentials';
+export const STATUS_REQUIRED_MSG = 'Status is required';
