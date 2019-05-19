@@ -10,5 +10,12 @@ export interface IUser extends Document {
 }
 
 export interface IUserAuth extends Request {
-  user: string;
+  user: {
+    id: string,
+    name: string,
+    email: string,
+    password: string,
+    avatar: string,
+    date: Date,
+  };
 }
