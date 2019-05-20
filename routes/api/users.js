@@ -1,5 +1,5 @@
 import { SERVER_ERROR_MSG, EXISTING_USER_MSG } from '../../utils/constants';
-import { User } from '../../models/User';
+import User from '../../models/User';
 
 const express = require('express');
 

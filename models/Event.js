@@ -26,4 +26,5 @@ const EventSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Concert = mongoose.model('concert', EventSchema);
+const Concert = mongoose.model('concert', EventSchema);
+export default Concert;

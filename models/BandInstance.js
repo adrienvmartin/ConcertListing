@@ -10,4 +10,5 @@ const BandInstanceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = BandInstance = mongoose.model('bandInstance', BandInstanceSchema);
+const BandInstance = mongoose.model('bandInstance', BandInstanceSchema);
+export default BandInstance;

@@ -7,4 +7,5 @@ const VenueSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Venue = mongoose.model('venue', VenueSchema);
+const Venue = mongoose.model('venue', VenueSchema);
+export default Venue;

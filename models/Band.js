@@ -4,4 +4,5 @@ const BandSchema = new mongoose.Schema({
   name: String,
 });
 
-module.exports = Band = mongoose.model('band', BandSchema);
+const Band = mongoose.model('band', BandSchema);
+export default Band;

@@ -1,6 +1,6 @@
 import { SERVER_ERROR_MSG, NO_PROFILE_MSG } from '../../utils/constants';
-import { Profile } from '../../models/Profile';
-import { User } from '../../models/User';
+import Profile from '../../models/Profile';
+import User from '../../models/User';
 
 const express = require('express');
 
