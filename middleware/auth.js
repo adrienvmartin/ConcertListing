@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
-import { NO_TOKEN_MSG, INVALID_TOKEN_MSG } from '../utils/constants';
+const { NO_TOKEN_MSG, INVALID_TOKEN_MSG } = require('../utils/constants');
 
 module.exports = (req, res, next) => {
   const token = req.header('x-auth-token');
