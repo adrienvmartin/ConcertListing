@@ -5,4 +5,4 @@ const BandSchema = new mongoose.Schema({
 });
 
 const Band = mongoose.model('band', BandSchema);
-export default Band;
+module.exports = Band;
