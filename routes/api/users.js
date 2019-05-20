@@ -1,12 +1,14 @@
+import { SERVER_ERROR_MSG, EXISTING_USER_MSG } from '../../utils/constants';
+import { User } from '../../models/User';
+
 const express = require('express');
+
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
-
-import { SERVER_ERROR_MSG, EXISTING_USER_MSG } from '../../utils/constants';
 
 router.post(
   '/',
@@ -15,10 +17,7 @@ router.post(
       .not()
       .isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
-    check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 }),
+    check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -60,19 +59,17 @@ router.post(
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 3600 }, (err, token) => {
-          if (err) { throw err; }
-          res.json({ token });
-        });
-
+      jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600 }, (err, token) => {
+        if (err) {
+          throw err;
+        }
+        res.json({ token });
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(SERVER_ERROR_MSG);
     }
-  }
+  },
 );
 
 module.exports = router;
