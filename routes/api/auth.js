@@ -1,14 +1,13 @@
-import { SERVER_ERROR_MSG, INVALID_CREDENTIALS_MSG } from '../../utils/constants';
-import User from '../../models/User';
-
 const express = require('express');
-
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
+const User = require('../../models/User');
+const { SERVER_ERROR_MSG, INVALID_CREDENTIALS_MSG } = require('../../utils/constants');
 const auth = require('../../middleware/auth');
+
+const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {

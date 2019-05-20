@@ -1,14 +1,13 @@
-import { SERVER_ERROR_MSG, EXISTING_USER_MSG } from '../../utils/constants';
-import User from '../../models/User';
-
 const express = require('express');
-
-const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
+const { SERVER_ERROR_MSG, EXISTING_USER_MSG } = require('../../utils/constants');
+const User = require('../../models/User');
+
+const router = express.Router();
 
 router.post(
   '/',

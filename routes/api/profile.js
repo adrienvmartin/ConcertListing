@@ -1,11 +1,10 @@
-import { SERVER_ERROR_MSG, NO_PROFILE_MSG } from '../../utils/constants';
-import Profile from '../../models/Profile';
-import User from '../../models/User';
-
 const express = require('express');
+const { SERVER_ERROR_MSG, NO_PROFILE_MSG } = require('../../utils/constants');
+const Profile = require('../../models/Profile');
+const User = require('../../models/User');
+const auth = require('../../middleware/auth');
 
 const router = express.Router();
-const auth = require('../../middleware/auth');
 
 router.get('/me', auth, async (req, res) => {
   try {
