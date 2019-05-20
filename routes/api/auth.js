@@ -1,16 +1,14 @@
+import { SERVER_ERROR_MSG, EXISTING_USER_MSG, INVALID_CREDENTIALS_MSG } from '../../utils/constants';
+import { User } from '../../models/User';
+
 const express = require('express');
+
 const router = express.Router();
-const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
-
-import {
-  SERVER_ERROR_MSG,
-  EXISTING_USER_MSG,
-  INVALID_CREDENTIALS_MSG
-} from '../../utils/constants';
+const auth = require('../../middleware/auth');
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -36,20 +34,16 @@ router.post(
     const { email, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      const user = await User.findOne({ email });
 
       if (!user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: INVALID_CREDENTIALS_MSG }] });
+        return res.status(400).json({ errors: [{ msg: INVALID_CREDENTIALS_MSG }] });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: INVALID_CREDENTIALS_MSG }] });
+        return res.status(400).json({ errors: [{ msg: INVALID_CREDENTIALS_MSG }] });
       }
 
       const payload = {
@@ -58,19 +52,17 @@ router.post(
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 3600 }, (err, token) => {
-          if (err) { throw err; }
-          res.json({ token });
-        });
-
+      jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600 }, (err, token) => {
+        if (err) {
+          throw err;
+        }
+        res.json({ token });
+      });
     } catch (err) {
       console.error(err.message);
       res.status(500).send(SERVER_ERROR_MSG);
     }
-  }
+  },
 );
 
 module.exports = router;
