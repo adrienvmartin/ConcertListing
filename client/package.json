@@ -37,6 +37,7 @@
   },
   "proxy": "http://localhost:5000",
   "prettier": {
-    "semi": true
+    "semi": true,
+    "singleQuote": true
   }
 }
