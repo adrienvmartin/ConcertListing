@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 const Landing = props => {
   return (
@@ -27,7 +26,5 @@ const Landing = props => {
     </Fragment>
   );
 };
-
-Landing.propTypes = {};
 
 export default Landing;
