@@ -32,7 +32,45 @@ const NewEventForm = () => {
             required
           />
         </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Openers"
+            name="openers"
+            value={openers}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Venue"
+            name="venue"
+            value={venue}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="City"
+            name="city"
+            value={city}
+            onChange={e => onChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Date"
+            name="date"
+            value={date}
+            onChange={e => onChange(e)}
+          />
+        </div>
       </form>
     </Fragment>
   );
 };
+
+export default NewEventForm;
