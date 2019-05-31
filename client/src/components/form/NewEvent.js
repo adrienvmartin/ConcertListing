@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 
-const NewEventForm = () => {
+const CreateEventForm = () => {
   const [formData, setFormData] = useState({
     headliner: '',
     openers: [],
@@ -73,4 +73,4 @@ const NewEventForm = () => {
   );
 };
 
-export default NewEventForm;
+export default CreateEventForm;
