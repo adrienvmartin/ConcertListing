@@ -44,7 +44,7 @@ const CreateEventForm = () => {
           />
         </div>
         <div className="form-group">
-        <TextField
+          <TextField
             name={OPENERS_FIELD}
             label={OPENERS_FIELD_LABEL}
             value={openers}
@@ -52,7 +52,7 @@ const CreateEventForm = () => {
           />
         </div>
         <div className="form-group">
-        <TextField
+          <TextField
             name={CITY_FIELD}
             label={CITY_FIELD_LABEL}
             value={city}
@@ -60,7 +60,7 @@ const CreateEventForm = () => {
           />
         </div>
         <div className="form-group">
-        <TextField
+          <TextField
             name={VENUE_FIELD}
             label={VENUE_FIELD_LABEL}
             value={venue}
@@ -68,7 +68,7 @@ const CreateEventForm = () => {
           />
         </div>
         <div className="form-group">
-        <TextField
+          <TextField
             name={DATE_FIELD}
             label={DATE_FIELD_LABEL}
             value={date}
