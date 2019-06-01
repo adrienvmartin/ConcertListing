@@ -16,7 +16,8 @@
         "ecmaVersion": 2018
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
         "consistent-return": 0,
