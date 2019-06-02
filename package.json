@@ -2,7 +2,7 @@
   "name": "concertlist",
   "version": "1.0.0",
   "description": "Concert listing database app",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
