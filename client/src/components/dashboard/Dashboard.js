@@ -6,7 +6,7 @@ import { getCurrentProfile } from '../../actions/profile';
 const Dashboard = ({ getCurrentProfile, auth, profile }) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
 
   return <div>Dashboard</div>;
 };
