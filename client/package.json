@@ -42,7 +42,6 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.2",
     "eslint-config-react-app": "^4.0.1",
     "eslint-plugin-flowtype": "^3.13.0"
   }
