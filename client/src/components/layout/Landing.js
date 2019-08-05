@@ -12,7 +12,7 @@ const Landing = ({ isAuthenticated }) => {
       <section className="landing">
         <div className="dark-overlay">
           <div className="landing-inner">
-            <h1 className="x-large">Concert Database</h1>
+            <h1 className="x-large">ConcertLister</h1>
             <p className="lead">
               Track your concerts and organize all relevant statistics and
               information in one convenient place!
