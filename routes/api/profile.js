@@ -1,18 +1,18 @@
 const express = require('express');
+const { check, validationResult } = require('express-validator/check');
 const { SERVER_ERROR_MSG, NO_PROFILE_MSG } = require('../../utils/constants');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator/check');
 
 const router = express.Router();
 
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate(
-      'user',
-      ['name', 'avatar']
-    );
+    const profile = await Profile.findOne({ user: req.user.id }).populate('user', [
+      'name',
+      'avatar',
+    ]);
 
     if (!profile) {
       return res.status(400).json({ msg: NO_PROFILE_MSG });
@@ -35,8 +35,8 @@ router.post(
         .isEmpty(),
       check('skills', 'Skills is required')
         .not()
-        .isEmpty()
-    ]
+        .isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -56,7 +56,7 @@ router.post(
       facebook,
       twitter,
       instagram,
-      linkedin
+      linkedin,
     } = req.body;
 
     const profileFields = {};
@@ -85,7 +85,7 @@ router.post(
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
-          { new: true }
+          { new: true },
         );
 
         return res.json(profile);
@@ -99,7 +99,7 @@ router.post(
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-  }
+  },
 );
 
 router.get('/', async (req, res) => {
