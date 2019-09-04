@@ -14,8 +14,8 @@ const Landing = ({ isAuthenticated }) => {
           <div className="landing-inner">
             <h1 className="x-large">ConcertLister</h1>
             <p className="lead">
-              Track your concerts and organize all relevant statistics and
-              information in one convenient place!
+              This is a tool for inputting, accessing, and organizing your concert-going data.
+              Create events and keep track of the who, where, and when of the shows you've been to.
             </p>
             <div className="buttons">
               <Link to="/register" className="btn btn-primary">

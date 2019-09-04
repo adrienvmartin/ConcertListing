@@ -26,8 +26,8 @@ const profileReducer = (state = initialState, action) => {
     case CLEAR_PROFILE:
       return {
         ...state,
-      profile: null,  
-    }  
+      profile: null,
+    };
     default:
       return state;
   }
