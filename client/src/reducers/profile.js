@@ -7,7 +7,6 @@ import {
 
 const initialState = {
   profile: null,
-  shows: [],
   loading: true,
   error: {}
 };

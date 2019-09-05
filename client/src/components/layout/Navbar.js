@@ -14,7 +14,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
         </Link>
       </li>
       <li>
-        <Link to="/listing">Listings</Link>
+        <Link to="/events">Your Events</Link>
       </li>
       <li>
         <a onClick={logout} href="#!">
