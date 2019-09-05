@@ -9,10 +9,10 @@ const router = express.Router();
 
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate('user', [
-      'name',
-      'avatar',
-    ]);
+    const profile = await Profile.findOne({ user: req.user.id }).populate(
+      'user',
+      ['name', 'avatar']
+    );
 
     if (!profile) {
       return res.status(400).json({ msg: NO_PROFILE_MSG });
@@ -54,7 +54,7 @@ router.post(
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
-          { new: true },
+          { new: true }
         );
 
         return res.json(profile);
@@ -68,7 +68,7 @@ router.post(
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-  },
+  }
 );
 
 router.get('/', async (req, res) => {
@@ -92,5 +92,39 @@ router.delete('/', async (req, res) => {
     res.status(500).send(SERVER_ERROR_MSG);
   }
 });
+
+router.put(
+  '/shows',
+  [
+    auth,
+    [
+      check('bands', 'At least one band is required').not.isEmpty(),
+      check('city', 'City is required').not.isEmpty(),
+      check('venue', 'Venue is required').not.isEmpty(),
+      check('date', 'Date is required').not.isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { bands, city, venue, date } = req.body;
+
+    const newShow = {
+      bands,
+      city,
+      venue,
+      date,
+    };
+
+    try {
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send(SERVER_ERROR_MSG);
+    }
+  }
+);
 
 module.exports = router;
