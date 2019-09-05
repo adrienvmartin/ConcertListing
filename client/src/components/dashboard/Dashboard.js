@@ -4,18 +4,33 @@ import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 
-const Dashboard = ({ getCurrentProfile, auth: { user }, profile: { profile, loading } }) => {
-  useEffect(() => {
-    getCurrentProfile();
-  }, [getCurrentProfile]);
+const Dashboard = ({
+  getCurrentProfile,
+  auth: { user },
+  profile: { profile, loading }
+}) => {
+  useEffect(
+    () => {
+      getCurrentProfile();
+    },
+    [getCurrentProfile]
+  );
 
-  return loading && profile === null ? <Spinner /> : <Fragment>
-    <h1 className="large text-primary">Dashboard</h1>
-    <p className="lead">
-    <i className="fas fa-user"></i>Welcome, { user && user.name } 
-    </p>
-    {profile !== null ? <Fragment>has</Fragment> : <Fragment>has not</Fragment>}
-  </Fragment>
+  return loading && profile === null ? (
+    <Spinner />
+  ) : (
+    <Fragment>
+      <h1 className="large text-primary">Dashboard</h1>
+      <p className="lead">
+        <i className="fas fa-user" />Welcome, {user && user.name}
+      </p>
+      {profile !== null ? (
+        <Fragment>has</Fragment>
+      ) : (
+        <Fragment>has not</Fragment>
+      )}
+    </Fragment>
+  );
 };
 
 Dashboard.propTypes = {
@@ -33,3 +48,5 @@ export default connect(
   mapStateToProps,
   { getCurrentProfile }
 )(Dashboard);
+
+// Have different ways of showing statistics in different components (i.e. main listing, bands, venues, etc) that are displayed in a different tab
