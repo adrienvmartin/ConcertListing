@@ -134,4 +134,24 @@ router.put(
   }
 );
 
+router.delete('/shows/:show_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    const showIds = profile.shows.map(shows => shows._id.toString());
+
+    const removeIndex = showIds.indexOf(req.params.show_id);
+
+    if (removeIndex === -1) {
+      return res.status(500).json({ msg: SERVER_ERROR_MSG });
+    } else {
+      profile.shows.splice(removeIndex, 1);
+      await profile.save();
+      return res.status(200).json(profile);
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(SERVER_ERROR_MSG);
+  }
+});
+
 module.exports = router;
