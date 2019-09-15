@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_SHOW, PROFILE_ERROR, UPDATE_PROFILE } from './types';
+import { ADD_SHOW, DELETE_SHOW, PROFILE_ERROR } from './types';
 import { setAlert } from './alert';
 
 export const addEvent = formData => async dispatch => {
@@ -37,11 +37,11 @@ export const deleteEvent = id => async dispatch => {
     const res = await axios.delete(`/api/profile/events/${id}`);
 
     dispatch({
-      type: UPDATE_PROFILE,
+      type: DELETE_SHOW,
       payload: res.data
     });
 
-    dispatch(setAlert('Event removed', 'success'));
+    dispatch(setAlert('Event Removed', 'success'));
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
