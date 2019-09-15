@@ -1,5 +1,5 @@
 const express = require('express');
-const Concert = require('../../models/Event');
+const Event = require('../../models/Event');
 const Profile = require('../../models/Profile');
 const { SERVER_ERROR_MSG } = require('../../utils/constants');
 const { check, validationResult } = require('express-validator/check');
@@ -9,15 +9,33 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    const events = await Concert.find().toArray();
+    const events = await Event.find().sort({ date: -1 });
     res.json(events);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
   }
 });
 
-router.put(
-  '/events',
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    res.json(event);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+    res.status(500).send(SERVER_ERROR_MSG);
+  }
+});
+
+router.post(
+  '/',
   [
     auth,
     [
@@ -43,13 +61,19 @@ router.put(
     };
 
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
+      const user = await User.findById(req.user.id).select('-password');
 
-      profile.events.unshift(newShow);
+      const newEvent = new Event({
+        headliner: req.body.bands.headliner,
+        openers: req.body.bands.openers,
+        city: req.body.city,
+        venue: req.body.venue,
+        date: req.body.date,
+      });
 
-      await profile.save();
+      const event = await newEvent.save();
 
-      res.json(profile);
+      res.json(event);
     } catch (err) {
       console.error(err.message);
       res.status(500).send(SERVER_ERROR_MSG);
@@ -57,7 +81,7 @@ router.put(
   }
 );
 
-router.delete('/events/:event_id', auth, async (req, res) => {
+router.delete('/:event_id', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id });
     const showIds = profile.events.map(events => events._id.toString());
