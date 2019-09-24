@@ -2,6 +2,21 @@ import axios from 'axios';
 import { ADD_SHOW, DELETE_SHOW, PROFILE_ERROR } from './types';
 import { setAlert } from './alert';
 
+export const loadEvents = async dispatch => {
+  try {
+    const res = await axios.get('/api/events');
+
+    dispatch({
+      type: 'LOAD_EVENTS',
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: 'ERROR',
+    });
+  }
+};
+
 export const addEvent = formData => async dispatch => {
   try {
     const config = {
@@ -10,7 +25,7 @@ export const addEvent = formData => async dispatch => {
       }
     };
 
-    const res = await axios.put('/api/profile/events', formData, config);
+    const res = await axios.put('/api/events', formData, config);
 
     dispatch({
       type: ADD_SHOW,
@@ -34,7 +49,7 @@ export const addEvent = formData => async dispatch => {
 
 export const deleteEvent = id => async dispatch => {
   try {
-    const res = await axios.delete(`/api/profile/events/${id}`);
+    const res = await axios.delete(`/api/events/${id}`);
 
     dispatch({
       type: DELETE_SHOW,
