@@ -17,6 +17,15 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
         <Link to="/events">Your Events</Link>
       </li>
       <li>
+        <Link to="/bands">Bands</Link>
+      </li>
+      <li>
+        <Link to="/venues">Venues</Link>
+      </li>
+      <li>
+        <Link to="/cities">Cities</Link>
+      </li>
+      <li>
         <a onClick={logout} href="#!">
           <i className="fas fa-sign-out-alt" />{' '}
           <span className="hide-sm">Logout</span>
@@ -43,8 +52,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <nav className="navbar bg-dark">
       <h1>
         <Link to="/">
-          <i className="fas fa-music" />{' '}
-          ConcertLister
+          <i className="fas fa-music" /> ConcertLister
         </Link>
       </h1>
       {!loading && (
