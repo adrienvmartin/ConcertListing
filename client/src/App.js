@@ -5,7 +5,7 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
-import Listing from './components/listings/MainListing';
+import Events from './components/dashboard/Events';
 import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { Provider } from 'react-redux';
@@ -34,8 +34,12 @@ const App = () => {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/listing" component={Listing} />
+              <Route exact path="/examples" />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/events" component={Events} />
+              <PrivateRoute exact path="/bands" />
+              <PrivateRoute exact path="/venues" />
+              <PrivateRoute exact path="/cities" />
             </Switch>
           </section>
         </Fragment>
