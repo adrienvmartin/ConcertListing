@@ -24,13 +24,6 @@ const Dashboard = ({
       <p className="lead">
         <i className="fas fa-user" />Welcome, {user && user.name}
       </p>
-      {profile !== null ? (
-        <Fragment>has</Fragment>
-      ) : (
-        <Fragment>
-          <p>You have not yet set up a profile, please add some info.</p>
-        </Fragment>
-      )}
     </Fragment>
   );
 };
