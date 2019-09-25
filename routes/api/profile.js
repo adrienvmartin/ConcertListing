@@ -93,5 +93,66 @@ router.delete('/', async (req, res) => {
   }
 });
 
+router.get('/events', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id }).populate('events');
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+// Create new event
+router.put(
+  '/events',
+  [
+    auth,
+    [
+      check('bands', 'At least one band is required')
+        .not()
+        .isEmpty(),
+      check('venue', 'Venue is required')
+        .not()
+        .isEmpty(),
+      check('city', 'City is required')
+        .not()
+        .isEmpty(),
+      check('date', 'Date is required')
+        .not()
+        .isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { bands, city, venue, date } = req.body;
+
+    const newShow = {
+      bands,
+      city,
+      venue,
+      date,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.events.push(newShow);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;
