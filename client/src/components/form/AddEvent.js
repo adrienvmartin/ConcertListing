@@ -8,7 +8,7 @@ const AddEvent = () => {
   const [formData, setFormData] = useState({
     bands: {
       headliner: '',
-      openers: []
+      openers: '',
     },
     city: '',
     venue: '',
@@ -44,8 +44,8 @@ const AddEvent = () => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Openers"
-            name="bands"
+            placeholder="Openers (separated by commas)"
+            name="openers"
             value={openers}
             onChange={e => onChange(e)}
           />
