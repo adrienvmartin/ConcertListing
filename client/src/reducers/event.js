@@ -6,7 +6,9 @@ import {
   EVENT_ERROR
 } from '../actions/types';
 
-const initialState = {
+import { bandSplitter, duplicateCheck } from '../utils/dataParser';
+
+export const initialState = {
   events: [],
   event: null,
   loading: true,
@@ -30,10 +32,13 @@ const eventReducer = (state = initialState, action) => {
         loading: false,
       };
     case ADD_SHOW:
+      const newBands = bandSplitter(payload.bands);
+      const finalBands = newBands.concat(...state.bands).sort();
       return {
         ...state,
-        events: [payload, ...state.events],
+        events: [...state.events, payload],
         loading: false,
+        bands: duplicateCheck(finalBands)
       };
     case DELETE_SHOW:
       return {
