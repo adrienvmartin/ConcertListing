@@ -2,9 +2,9 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { addEvent } from '../../actions/event';
+import { createEvent } from '../../actions/profile';
 
-const AddEvent = addEvent => {
+const AddEvent = () => {
   const [formData, setFormData] = useState({
     headliner: '',
     bands: [],
@@ -26,13 +26,13 @@ const AddEvent = addEvent => {
         className="form"
         onSubmit={e => {
           e.preventDefault();
-          addEvent(formData);
+          createEvent(formData);
         }}
       >
         <div className="form-group">
           <input
             type="text"
-            placeholder="Headliner"
+            placeholder="* Headliner"
             name="headliner"
             value={headliner}
             onChange={e => onChange(e)}
@@ -51,7 +51,7 @@ const AddEvent = addEvent => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Venue"
+            placeholder="* Venue"
             name="venue"
             value={venue}
             onChange={e => onChange(e)}
@@ -61,7 +61,7 @@ const AddEvent = addEvent => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="City"
+            placeholder="* City"
             name="city"
             value={city}
             onChange={e => onChange(e)}
@@ -70,8 +70,8 @@ const AddEvent = addEvent => {
         </div>
         <div className="form-group">
           <input
-            type="text"
-            placeholder="Date"
+            type="date"
+            placeholder="* Date"
             name="date"
             value={date}
             onChange={e => onChange(e)}
