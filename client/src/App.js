@@ -6,6 +6,11 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
+import Events from './components/events/Events';
+import Bands from './components/events/Bands';
+import Venues from './components/events/Venues';
+import Cities from './components/events/Cities';
+import AddEvent from './components/form/AddEvent';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -35,10 +40,11 @@ const App = () => {
               <Route exact path="/register" component={Register} />
               <Route exact path="/examples" />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/events" />
-              <PrivateRoute exact path="/bands" />
-              <PrivateRoute exact path="/venues" />
-              <PrivateRoute exact path="/cities" />
+              <PrivateRoute exact path="/events" component={Events} />
+              <PrivateRoute exact path="/bands" component={Bands} />
+              <PrivateRoute exact path="/venues" component={Venues} />
+              <PrivateRoute exact path="/cities" component={Cities} />
+              <PrivateRoute exact path="/add-event" component={AddEvent} />
             </Switch>
           </section>
         </Fragment>
