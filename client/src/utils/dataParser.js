@@ -1,4 +1,4 @@
-export const bandSplitter = bands => {
+export const bandSplitter = bands => { // Needs to be one band at a time?
   const bandList = [];
   const headliner = bands.headliner;
   const openers = bands.openers;
@@ -10,27 +10,16 @@ export const bandSplitter = bands => {
   }
 
   bandList.push(headliner);
-
   bandList.sort();
-
-  /*
-  const counts = {};
-
-  bandList.forEach((x) => { counts[x] = (counts[x] || 0)+1; });
-  const fullBandList = [];
-
-  for (let n = 0; n < Object.entries(counts).length; n++) {
-    fullBandList.push(Object.entries(counts)[n]);
-  }
-
-
-  fullBandList.shift();
-  fullBandList.pop();
-  fullBandList.sort((a, b) => { return b[1] - a[1]; }); */
-
   return bandList;
 };
 
-export const yearSplitter = (date) => {
-  return date.toString().slice(0,4);
+export const duplicateCheck = bands => {
+  return bands.filter((item, index) => {
+    return bands.indexOf(item) >= index;
+  });
+};
+
+export const yearSplitter = date => {
+  return date.toString().slice(0, 4);
 };
