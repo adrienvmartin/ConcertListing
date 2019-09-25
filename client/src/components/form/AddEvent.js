@@ -6,14 +6,16 @@ import { createEvent } from '../../actions/profile';
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
-    headliner: '',
-    bands: [],
+    bands: {
+      headliner: '',
+      openers: []
+    },
     city: '',
     venue: '',
     date: ''
   });
 
-  const { headliner, bands, city, venue, date } = formData;
+  const { bands: { headliner, openers }, city, venue, date } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +46,7 @@ const AddEvent = () => {
             type="text"
             placeholder="Openers"
             name="bands"
-            value={bands}
+            value={openers}
             onChange={e => onChange(e)}
           />
         </div>
@@ -86,10 +88,10 @@ const AddEvent = () => {
 };
 
 AddEvent.propTypes = {
-  addEvent: PropTypes.func.isRequired
+  createEvent: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { addEvent }
+  { createEvent }
 )(withRouter(AddEvent));
