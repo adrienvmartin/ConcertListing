@@ -5,34 +5,10 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  events: [
-    {
-      bands: {
-        headliner: {
-          type: String,
-          required: true,
-        },
-        openers: [
-          {
-            type: String,
-            required: false,
-          },
-        ],
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      venue: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'event' }],
+  bands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'band' }],
+  cities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'city' }],
+  venues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'venue' }],
 });
 
 const Profile = mongoose.model('profile', ProfileSchema);
