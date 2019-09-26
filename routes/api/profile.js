@@ -11,7 +11,7 @@ router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       'user',
-      ['name']
+      ['name', 'events']
     );
 
     if (!profile) {
@@ -101,7 +101,7 @@ router.put(
   [
     auth,
     [
-      check('bands', 'At least one band is required')
+      check('bands.headliner', 'At least one band is required')
         .not()
         .isEmpty(),
       check('venue', 'Venue is required')
@@ -129,24 +129,23 @@ router.put(
       date,
     } = req.body;
 
-    const newShow = {
-      headliner,
-      openers,
-      city,
-      venue,
-      date,
-    };
-
-    const newBands = { headliner, openers };
+    const eventFields = {};
+    eventFields.bands = {};
+    eventFields.user = req.user.id;
+    if (headliner) eventFields.bands.headliner = headliner;
+    if (openers) {
+      eventFields.bands.openers = openers.split(',').map(opener => opener.trim());
+    }
+    if (city) eventFields.city = city;
+    if (venue) eventFields.venue = venue;
+    if (date) eventFields.date = date;
 
     try {
-      const profile = await Profile.findOne({ user: req.user.id });
-
-      profile.events.push(newShow);
-      profile.bands.push(newBands);
-
-      await profile.save();
-
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { events: eventFields },
+        { new: true, upsert: true }
+      );
       res.json(profile);
     } catch (err) {
       res.status(500).send('Server Error');
