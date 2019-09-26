@@ -9,7 +9,6 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE,
-  PROFILE_SUCCESS,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -42,17 +41,11 @@ export const register = ({ name, email, password }) => async dispatch => {
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post('/api/users', body, config); // Add post request for profile here? Or remove "profiles" entirely...
-    const proRes = await axios.post('/api/profile');
+    const res = await axios.post('/api/users', body, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data
-    });
-
-    dispatch({
-      type: PROFILE_SUCCESS,
-      payload: proRes.data
     });
   } catch (err) {
     const errors = err.response.data.errors;
