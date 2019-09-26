@@ -12,7 +12,7 @@ export const initialState = {
   events: [],
   event: null,
   loading: true,
-  errors: {},
+  errors: {}
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -23,13 +23,13 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: payload,
-        loading: false,
+        loading: false
       };
     case GET_EVENT:
       return {
         ...state,
         event: payload,
-        loading: false,
+        loading: false
       };
     case ADD_SHOW:
       const newBands = bandSplitter(payload.bands);
@@ -38,19 +38,21 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         events: [...state.events, payload],
         loading: false,
-        bands: duplicateCheck(finalBands)
+        bands: duplicateCheck(finalBands),
+        cities: [...state.cities, payload.city],
+        venues: [...state.venues, payload.venue]
       };
-    case DELETE_SHOW:
+    case DELETE_SHOW: // Remove relevant band/city/venue instances when deleting an event
       return {
         ...state,
         events: state.events.filter(e => e._id !== payload),
-        loading: false,
+        loading: false
       };
     case EVENT_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false,
+        loading: false
       };
     default:
       return state;
