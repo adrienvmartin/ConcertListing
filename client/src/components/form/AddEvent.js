@@ -20,6 +20,9 @@ const AddEvent = () => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onChangeBands = e =>
+    setFormData({ ...formData, bands: { ...formData.bands, [e.target.name]: e.target.value }});
+
   return (
     <Fragment>
       <h1 className="large text-primary">Add An Event</h1>
@@ -36,8 +39,8 @@ const AddEvent = () => {
             type="text"
             placeholder="* Headliner"
             name="headliner"
-            value={headliner}
-            onChange={e => onChange(e)}
+            value={headliner || ''}
+            onChange={e => onChangeBands(e)}
             required
           />
         </div>
@@ -46,8 +49,8 @@ const AddEvent = () => {
             type="text"
             placeholder="Openers (separated by commas)"
             name="openers"
-            value={openers}
-            onChange={e => onChange(e)}
+            value={openers || ''}
+            onChange={e => onChangeBands(e)}
           />
         </div>
         <div className="form-group">
@@ -81,7 +84,9 @@ const AddEvent = () => {
           />
         </div>
         <input type="submit" className="btn btn-primary my-1" />
-        <Link className="btn btn-light my-1" to="/dashboard" />
+        <Link className="btn btn-light my-1" to="/dashboard">
+          Dashboard
+        </Link>
       </form>
     </Fragment>
   );
