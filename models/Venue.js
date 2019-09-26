@@ -11,7 +11,7 @@ const VenueSchema = new mongoose.Schema({
     default: 0,
   },
   instances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'event' }],
-  bands: [{ type: mongoose.Schema.Type.ObjectId, ref: 'band' }],
+  bands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'band' }],
 });
 
 const Venue = mongoose.model('venue', VenueSchema);
