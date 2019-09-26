@@ -23,16 +23,18 @@ const AddEvent = () => {
   const onChangeBands = e =>
     setFormData({ ...formData, bands: { ...formData.bands, [e.target.name]: e.target.value }});
 
+  const onSubmit = e => {
+    e.preventDefault();
+    createEvent(formData);
+  };
+
   return (
     <Fragment>
       <h1 className="large text-primary">Add An Event</h1>
       <small>* = required field</small>
       <form
         className="form"
-        onSubmit={e => {
-          e.preventDefault();
-          createEvent(formData);
-        }}
+        onSubmit={e => onSubmit(e)}
       >
         <div className="form-group">
           <input
