@@ -96,7 +96,8 @@ router.delete('/', async (req, res) => {
 router.get('/events', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate(
-      'events'
+      'user',
+      ['events']
     );
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
@@ -131,22 +132,27 @@ router.put(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('There was an error!');
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { bands, city, venue, date } = req.body;
+    const { bands: { headliner, openers }, city, venue, date } = req.body;
 
     const newShow = {
-      bands,
+      headliner,
+      openers,
       city,
       venue,
       date,
     };
 
+    const newBands = { headliner, openers };
+
     try {
       const profile = await Profile.findOne({ user: req.user.id });
 
       profile.events.push(newShow);
+      profile.bands.push(newBands);
 
       await profile.save();
 
