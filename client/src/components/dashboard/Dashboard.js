@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
+import { Link } from 'react-router-dom';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -24,6 +25,18 @@ const Dashboard = ({
       <p className="lead">
         <i className="fas fa-user" />Welcome, {user && user.name}
       </p>
+      { profile !== null ? (
+        <Fragment>
+          Welcome back! Keep adding events to keep this up-to-date.
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p>You have not yet added any events, please do so now.</p>
+          <Link to="/add-event" className="btn btn-primary my-1">
+            Create Your First Event
+          </Link>
+        </Fragment>
+      )}
     </Fragment>
   );
 };
@@ -43,5 +56,3 @@ export default connect(
   mapStateToProps,
   { getCurrentProfile }
 )(Dashboard);
-
-// Have different ways of showing statistics in different components (i.e. main listing, bands, venues, etc) that are displayed in a different tab
