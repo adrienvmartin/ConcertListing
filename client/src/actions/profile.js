@@ -32,7 +32,7 @@ export const loadEvents = async dispatch => {
   }
 };
 
-export const createEvent = ({ formData }) => async dispatch => {
+export const createEvent = formData => async dispatch => {
   try {
     const config = {
       headers: {
