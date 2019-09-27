@@ -1,5 +1,6 @@
 const express = require('express');
 const Event = require('../../models/Event');
+const User = require('../../models/User');
 const Profile = require('../../models/Profile');
 const { SERVER_ERROR_MSG } = require('../../utils/constants');
 const { check, validationResult } = require('express-validator/check');
@@ -39,10 +40,18 @@ router.post(
   [
     auth,
     [
-      check('bands', 'At least one band is required').not.isEmpty(),
-      check('city', 'City is required').not.isEmpty(),
-      check('venue', 'Venue is required').not.isEmpty(),
-      check('date', 'Date is required').not.isEmpty(),
+      check('bands', 'At least one band is required')
+        .not()
+        .isEmpty(),
+      check('city', 'City is required')
+        .not()
+        .isEmpty(),
+      check('venue', 'Venue is required')
+        .not()
+        .isEmpty(),
+      check('date', 'Date is required')
+        .not()
+        .isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -51,10 +60,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { bands, city, venue, date } = req.body;
+    const { bands: { headliner, openers }, city, venue, date } = req.body;
 
     const newShow = {
-      bands,
+      bands: {
+        headliner,
+        openers
+      },
       city,
       venue,
       date,
@@ -64,8 +76,10 @@ router.post(
       const user = await User.findById(req.user.id).select('-password');
 
       const newEvent = new Event({
-        headliner: req.body.bands.headliner,
-        openers: req.body.bands.openers,
+        bands: {
+          headliner: req.body.bands.headliner,
+          openers: req.body.bands.openers,
+        },
         city: req.body.city,
         venue: req.body.venue,
         date: req.body.date,
@@ -100,3 +114,5 @@ router.delete('/:event_id', auth, async (req, res) => {
     res.status(500).send(SERVER_ERROR_MSG);
   }
 });
+
+module.exports = router;
