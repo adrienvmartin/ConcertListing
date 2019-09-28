@@ -8,20 +8,28 @@ const AddEvent = ({ createEvent, history }) => {
   const [formData, setFormData] = useState({
     bands: {
       headliner: '',
-      openers: '',
+      openers: ''
     },
     city: '',
     venue: '',
     date: ''
   });
 
-  const { bands: { headliner, openers }, city, venue, date } = formData;
+  const {
+    bands: { headliner, openers },
+    city,
+    venue,
+    date
+  } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onChangeBands = e =>
-    setFormData({ ...formData, bands: { ...formData.bands, [e.target.name]: e.target.value }});
+    setFormData({
+      ...formData,
+      bands: { ...formData.bands, [e.target.name]: e.target.value }
+    });
 
   const onSubmit = e => {
     e.preventDefault();
@@ -32,11 +40,7 @@ const AddEvent = ({ createEvent, history }) => {
     <Fragment>
       <h1 className="large text-primary">Add An Event</h1>
       <small>* = required field</small>
-      <form
-        className="form"
-        onSubmit={e =>
-          onSubmit(e)}
-      >
+      <form className="form" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
           <input
             type="text"

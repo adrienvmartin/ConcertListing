@@ -19,27 +19,24 @@ const Bands = ({ loadBands, bands, loading }) => {
     <Fragment>
       <h1 className="large text-primary">Bands</h1>
       {bands.length > 0 ? (
-      <Fragment>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Band Name</th>
-              <th>Number Of Events</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bands.map(b => (
-              <BandItem key={b._id} band={b} />
-            ))}
-          </tbody>
-        </table>
-      </Fragment>
-      )
-      : (
         <Fragment>
-          You have not seen any bands yet.
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Band Name</th>
+                <th>Number Of Events</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bands.map(b => (
+                <BandItem key={b._id} band={b} />
+              ))}
+            </tbody>
+          </table>
         </Fragment>
-        )}
+      ) : (
+        <Fragment>You have not seen any bands yet.</Fragment>
+      )}
     </Fragment>
   );
 };

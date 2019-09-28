@@ -21,9 +21,9 @@ const EventItem = ({
       <td>{city}</td>
       <td>{date}</td>
       <td>
-        <button
-          onClick={() => deleteEvent(_id)}
-          className="btn btn-danger">Delete</button>
+        <button onClick={() => deleteEvent(_id)} className="btn btn-danger">
+          Delete
+        </button>
       </td>
     </tr>
   );
@@ -32,11 +32,14 @@ const EventItem = ({
 Event.propTypes = {
   event: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  deleteEvent: PropTypes.func.isRequired,
+  deleteEvent: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { deleteEvent })(EventItem);
+export default connect(
+  mapStateToProps,
+  { deleteEvent }
+)(EventItem);

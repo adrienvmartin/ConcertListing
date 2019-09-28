@@ -18,31 +18,29 @@ const Events = ({ loadEvents, event: { events, loading } }) => {
   ) : (
     <Fragment>
       <h1 className="large text-primary">Events</h1>
-      { events.length > 0 ? (
-      <Fragment>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Headliner</th>
-              <th>Openers</th>
-              <th>Venue</th>
-              <th>City</th>
-              <th>Date</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {events.map(ev => (
-              <EventItem key={ev._id} event={ev} />
-            ))}
-          </tbody>
-        </table>
-      </Fragment>
-        ) : (
-          <Fragment>
-            You have not created any events yet.
-          </Fragment>)
-      }
+      {events.length > 0 ? (
+        <Fragment>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Headliner</th>
+                <th>Openers</th>
+                <th>Venue</th>
+                <th>City</th>
+                <th>Date</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {events.map(ev => (
+                <EventItem key={ev._id} event={ev} />
+              ))}
+            </tbody>
+          </table>
+        </Fragment>
+      ) : (
+        <Fragment>You have not created any events yet.</Fragment>
+      )}
     </Fragment>
   );
 };
