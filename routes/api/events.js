@@ -1,5 +1,6 @@
 const express = require('express');
 const Event = require('../../models/Event');
+const Band = require('../../models/Band');
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
 const { SERVER_ERROR_MSG } = require('../../utils/constants');
@@ -10,7 +11,7 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    const events = await Event.find().sort({ date: -1 });
+    const events = await Event.find({ user: req.user.id }).sort({ date: -1 });
     res.json(events);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
@@ -32,6 +33,15 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Event not found' });
     }
     res.status(500).send(SERVER_ERROR_MSG);
+  }
+});
+
+router.get('/bands', auth, async (req, res) => {
+  try {
+    const bands = await Band.find({ user: req.user.id });
+    res.json(bands);
+  } catch (err) {
+    return res.status(500).send(SERVER_ERROR_MSG);
   }
 });
 
@@ -62,16 +72,6 @@ router.post(
 
     const { bands: { headliner, openers }, city, venue, date } = req.body;
 
-    const newShow = {
-      bands: {
-        headliner,
-        openers
-      },
-      city,
-      venue,
-      date,
-    };
-
     try {
       const user = await User.findById(req.user.id).select('-password');
 
@@ -86,6 +86,12 @@ router.post(
       });
 
       const event = await newEvent.save();
+
+      const bandList = [];
+      bandList.push(headliner);
+      bandList.push(openers.split(','.trim()));
+
+      await bandList.forEach(b => { new Band({ name: b }).save(); });
 
       res.json(event);
     } catch (err) {
