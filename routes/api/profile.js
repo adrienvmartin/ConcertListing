@@ -109,7 +109,7 @@ router.get('/bands', auth, async (req, res) => {
       counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
 
     res.json(result);
   } catch (err) {
