@@ -88,6 +88,38 @@ export const loadBands = () => async dispatch => {
   }
 };
 
+export const loadCities = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/profile/cities');
+
+    dispatch({
+      type: LOAD_CITIES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err,
+    });
+  }
+};
+
+export const loadVenues = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/profile/venues');
+
+    dispatch({
+      type: LOAD_VENUES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err,
+    });
+  }
+};
+
 export const createEvent = formData => async dispatch => {
   try {
     const config = {

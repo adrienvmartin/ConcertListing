@@ -131,7 +131,7 @@ router.get('/cities', auth, async (req, res) => {
       counts[cityList[i]] = (counts[cityList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
 
     res.json(result);
   } catch (err) {
@@ -153,7 +153,7 @@ router.get('/venues', auth, async (req, res) => {
       counts[venueList[i]] = (counts[venueList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
 
     res.json(result);
   } catch (err) {
