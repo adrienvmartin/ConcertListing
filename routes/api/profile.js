@@ -95,12 +95,13 @@ router.get('/events', auth, async (req, res) => {
 router.get('/bands', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const bandList = [];
-    events.forEach(e => {
-      bandList.push(e.bands.headliner, e.bands.openers[0]);
+    const openersList = events.map(e => { return e.bands.openers[0].split(',').map(o => o.trim()) });
+    const headlinersList = events.map(e => { return e.bands.headliner });
+    const bandList = [].concat.apply(headlinersList, openersList).sort();
+    const filteredList = bandList.filter((item, index) => {
+      return bandList.indexOf(item) >= index;
     });
-    bandList.sort();
-    res.json(bandList);
+    res.json(filteredList);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
@@ -110,15 +111,12 @@ router.get('/bands', auth, async (req, res) => {
 router.get('/cities', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const citiesList = [];
-    events.forEach(e => {
-      citiesList.push(e.city);
-    });
-    const noDupes = citiesList.filter((item, index) => {
+    const citiesList = events.map(e => { return e.city });
+    const filteredCities = citiesList.filter((item, index) => {
       return citiesList.indexOf(item) >= index;
     });
-    noDupes.sort();
-    res.json(noDupes);
+    filteredCities.sort();
+    res.json(filteredCities);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
@@ -128,10 +126,7 @@ router.get('/cities', auth, async (req, res) => {
 router.get('/venues', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const venueList = [];
-    events.forEach(e => {
-      venueList.push(e.venue);
-    });
+    const venueList = events.map(e => { return e.venue });
     const filteredList = venueList.filter((item, index) => {
       return venueList.indexOf(item) >= index;
     });
