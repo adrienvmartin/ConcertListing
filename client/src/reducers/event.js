@@ -3,7 +3,8 @@ import {
   ADD_SHOW,
   DELETE_SHOW,
   GET_EVENT,
-  EVENT_ERROR
+  EVENT_ERROR,
+  LOAD_EVENTS
 } from '../actions/types';
 
 import { bandSplitter, duplicateCheck } from '../utils/dataParser';
@@ -19,7 +20,7 @@ const eventReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_SHOWS:
+    case LOAD_EVENTS:
       return {
         ...state,
         events: payload,
@@ -32,15 +33,10 @@ const eventReducer = (state = initialState, action) => {
         loading: false
       };
     case ADD_SHOW:
-      const newBands = bandSplitter(payload.bands);
-      const finalBands = newBands.concat(...state.bands).sort();
       return {
         ...state,
         events: [...state.events, payload],
         loading: false,
-        bands: duplicateCheck(finalBands),
-        cities: [...state.cities, payload.city],
-        venues: [...state.venues, payload.venue]
       };
     case DELETE_SHOW: // Remove relevant band/city/venue instances when deleting an event
       return {
