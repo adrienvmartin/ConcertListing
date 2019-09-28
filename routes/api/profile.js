@@ -3,9 +3,6 @@ const { check, validationResult } = require('express-validator/check');
 const { SERVER_ERROR_MSG, NO_PROFILE_MSG } = require('../../utils/constants');
 const Profile = require('../../models/Profile');
 const concert = require('../../models/Event');
-const Band = require('../../models/Band');
-const City = require('../../models/City');
-const Venue = require('../../models/Venue');
 const User = require('../../models/User');
 const auth = require('../../middleware/auth');
 
@@ -71,15 +68,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', auth, async (req, res) => {
   try {
+    await concert.deleteMany({ user: req.user.id });
     await Profile.findOneAndRemove({ user: req.user.id });
     await User.findOneAndRemove({ _id: req.user.id });
 
     res.json({ msg: 'User deleted' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(SERVER_ERROR_MSG);
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
   }
 });
 
@@ -109,7 +107,10 @@ router.get('/bands', auth, async (req, res) => {
       counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
 
     res.json(result);
   } catch (err) {
@@ -131,7 +132,10 @@ router.get('/cities', auth, async (req, res) => {
       counts[cityList[i]] = (counts[cityList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
 
     res.json(result);
   } catch (err) {
@@ -153,7 +157,10 @@ router.get('/venues', auth, async (req, res) => {
       counts[venueList[i]] = (counts[venueList[i]] || 0) + 1;
     }
 
-    const result = Object.keys(counts).map(key => ({ name: key, instances: counts[key] }));
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
 
     res.json(result);
   } catch (err) {
@@ -250,25 +257,6 @@ router.delete('/events/:id', auth, async (req, res) => {
 
     res.status(500).send({ msg: SERVER_ERROR_MSG });
   }
-  /*try {
-    const foundProfile = await concert.find({ user: req.user.id });
-    const eventIds = foundProfile.map(ev => ev._id.toString());
-    const removeIndex = eventIds.indexOf(req.params.event_id);
-    if (removeIndex === -1) {
-      return res.status(500).json({ msg: 'Server error' });
-    } else {
-      console.log('eventIds', eventIds);
-      console.log('typeOf eventIds', typeof eventIds);
-      console.log('req.params', req.params);
-      console.log('removed', eventIds.indexOf(req.params.event_id));
-      foundProfile.splice(removeIndex, 1);
-      await foundProfile.save();
-      return res.status(200).json(foundProfile);
-    }
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ msg: 'Server error' });
-  }*/
 });
 
 module.exports = router;

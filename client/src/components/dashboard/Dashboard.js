@@ -27,11 +27,6 @@ const Dashboard = ({
         <i className="fas fa-user" />
         Welcome, {user && user.name}
       </p>
-      <div className="my-2">
-        <button className="btn btn-danger" onClick={() => deleteAccount()}>
-          Delete My Account
-        </button>
-      </div>
       {profile !== null ? (
         <Fragment>
           Welcome back! Keep adding events to keep this up-to-date.
@@ -44,6 +39,11 @@ const Dashboard = ({
           </Link>
         </Fragment>
       )}
+      <div className="my-2">
+        <button className="btn btn-danger" onClick={() => deleteAccount()}>
+          Delete My Account
+        </button>
+      </div>
     </Fragment>
   );
 };
