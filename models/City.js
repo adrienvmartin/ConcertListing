@@ -5,14 +5,12 @@ const CitySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  instanceCount: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  instances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'event' }],
-  bands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'band' }],
-  venues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'venue' }],
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
 });
 
 const City = mongoose.model('city', CitySchema);

@@ -5,10 +5,7 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'event' }],
-  bands: [{ type: mongoose.Schema.Types.ObjectId, ref: 'band' }],
-  cities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'city' }],
-  venues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'venue' }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'concert' }],
 });
 
 const Profile = mongoose.model('profile', ProfileSchema);

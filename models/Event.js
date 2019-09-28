@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const EventSchema = new mongoose.Schema({
   bands: {
     headliner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'band',
+      type: String,
       required: true,
     },
-    openers: {
-      type: Array,
-      required: false,
-    },
+    openers: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
   },
   date: {
     type: String,
@@ -23,6 +24,10 @@ const EventSchema = new mongoose.Schema({
   venue: {
     type: String,
     required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
   },
 });
 
