@@ -1,17 +1,20 @@
 import {
-  GET_SHOWS,
   ADD_SHOW,
   DELETE_SHOW,
   GET_EVENT,
   EVENT_ERROR,
-  LOAD_EVENTS
+  LOAD_EVENTS,
+  LOAD_BANDS,
+  LOAD_CITIES,
+  LOAD_VENUES,
+  LOADING_ERROR,
 } from '../actions/types';
-
-import { bandSplitter, duplicateCheck } from '../utils/dataParser';
 
 export const initialState = {
   events: [],
-  event: null,
+  bands: [],
+  cities: [],
+  venues: [],
   loading: true,
   errors: {}
 };
@@ -24,6 +27,30 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         events: payload,
+        loading: false
+      };
+    case LOAD_BANDS:
+      return {
+        ...state,
+        bands: payload,
+        loading: false,
+      };
+    case LOAD_CITIES:
+      return {
+        ...state,
+        cities: payload,
+        loading: false,
+      };
+    case LOAD_VENUES:
+      return {
+        ...state,
+        venues: payload,
+        loading: false,
+      };
+    case LOADING_ERROR:
+      return {
+        ...state,
+        error: payload,
         loading: false
       };
     case GET_EVENT:

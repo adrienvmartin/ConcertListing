@@ -1,5 +1,14 @@
 import axios from 'axios';
-import { GET_PROFILE, PROFILE_ERROR, ADD_SHOW, DELETE_SHOW } from './types';
+import {
+  GET_PROFILE,
+  PROFILE_ERROR,
+  ADD_SHOW,
+  DELETE_SHOW,
+  LOAD_EVENTS,
+  LOAD_BANDS,
+  LOAD_CITIES,
+  LOAD_VENUES, LOADING_ERROR
+} from './types';
 import { setAlert } from './alert';
 
 export const getCurrentProfile = () => async dispatch => {
@@ -29,7 +38,7 @@ export const createProfile = () => async dispatch => {
 
     dispatch({
       type: GET_PROFILE,
-      payload: res.data,
+      payload: res.data
     });
 
     dispatch(setAlert('Profile Created', 'success'));
@@ -52,12 +61,29 @@ export const loadEvents = () => async dispatch => {
     const res = await axios.get('/api/profile/events');
 
     dispatch({
-      type: 'LOAD_EVENTS',
-      payload: res.data,
+      type: LOAD_EVENTS,
+      payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: 'ERROR',
+      type: LOADING_ERROR,
+      payload: err,
+    });
+  }
+};
+
+export const loadBands = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/profile/bands');
+
+    dispatch({
+      type: LOAD_BANDS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err,
     });
   }
 };
