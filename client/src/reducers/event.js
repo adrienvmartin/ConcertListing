@@ -65,7 +65,7 @@ const eventReducer = (state = initialState, action) => {
         events: [...state.events, payload],
         loading: false,
       };
-    case DELETE_SHOW: // Remove relevant band/city/venue instances when deleting an event
+    case DELETE_SHOW:
       return {
         ...state,
         events: state.events.filter(e => e._id !== payload),

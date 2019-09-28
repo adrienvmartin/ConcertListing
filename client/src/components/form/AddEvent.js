@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { createEvent } from '../../actions/profile';
 
-const AddEvent = () => {
+const AddEvent = ({ createEvent }) => {
   const [formData, setFormData] = useState({
     bands: {
       headliner: '',
@@ -34,7 +34,8 @@ const AddEvent = () => {
       <small>* = required field</small>
       <form
         className="form"
-        onSubmit={e => onSubmit(e)}
+        onSubmit={e =>
+          onSubmit(e)}
       >
         <div className="form-group">
           <input
@@ -85,7 +86,7 @@ const AddEvent = () => {
             required
           />
         </div>
-        <input type="submit" className="btn btn-primary my-1" />
+        <input type="submit" className="btn btn-primary my-1" value="Submit" />
         <Link className="btn btn-light my-1" to="/dashboard">
           Dashboard
         </Link>
