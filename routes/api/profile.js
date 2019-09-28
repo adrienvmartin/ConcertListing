@@ -85,7 +85,7 @@ router.delete('/', async (req, res) => {
 
 router.get('/events', auth, async (req, res) => {
   try {
-    const events = await concert.find({ user: req.user.id }).sort({ date: -1 });
+    const events = await concert.find({ user: req.user.id }).sort({ date: 1 });
     res.json(events);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
@@ -227,10 +227,32 @@ router.put(
 );
 
 // Delete event
-router.delete('/events/:event_id', auth, async (req, res) => {
+router.delete('/events/:id', auth, async (req, res) => {
   try {
-    const foundProfile = await Profile.findOne({ user: req.user.id });
-    const eventIds = foundProfile.events.map(ev => ev._id.toString());
+    const foundEvent = await concert.findById(req.params.id);
+
+    if (!foundEvent) {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    if (foundEvent.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    await foundEvent.remove();
+
+    res.json({ msg: 'Event removed' });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+  }
+  /*try {
+    const foundProfile = await concert.find({ user: req.user.id });
+    const eventIds = foundProfile.map(ev => ev._id.toString());
     const removeIndex = eventIds.indexOf(req.params.event_id);
     if (removeIndex === -1) {
       return res.status(500).json({ msg: 'Server error' });
@@ -239,14 +261,14 @@ router.delete('/events/:event_id', auth, async (req, res) => {
       console.log('typeOf eventIds', typeof eventIds);
       console.log('req.params', req.params);
       console.log('removed', eventIds.indexOf(req.params.event_id));
-      foundProfile.events.splice(removeIndex, 1);
+      foundProfile.splice(removeIndex, 1);
       await foundProfile.save();
       return res.status(200).json(foundProfile);
     }
   } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: 'Server error' });
-  }
+  }*/
 });
 
 module.exports = router;
