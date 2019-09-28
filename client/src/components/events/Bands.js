@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import BandItem from './BandItem';
-import { loadBands } from '../../actions/profile';
+import { loadBands } from '../../actions/event';
 
 const Bands = ({ loadBands, bands, loading }) => {
   useEffect(

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import CityItem from './CityItem';
-import { loadCities } from '../../actions/profile';
+import { loadCities } from '../../actions/event';
 
 const Cities = ({ loadCities, cities, loading }) => {
   useEffect(

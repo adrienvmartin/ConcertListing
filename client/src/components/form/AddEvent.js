@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { createEvent } from '../../actions/profile';
+import { createEvent } from '../../actions/event';
 
 const AddEvent = ({ createEvent, history }) => {
   const [formData, setFormData] = useState({

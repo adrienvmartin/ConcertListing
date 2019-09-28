@@ -1,8 +1,5 @@
 const express = require('express');
-const Event = require('../../models/Event');
-const Band = require('../../models/Band');
-const User = require('../../models/User');
-const Profile = require('../../models/Profile');
+const concert = require('../../models/Event');
 const { SERVER_ERROR_MSG } = require('../../utils/constants');
 const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
@@ -11,52 +8,105 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    const events = await Event.find({ user: req.user.id }).sort({ date: -1 });
+    const events = await concert.find({ user: req.user.id }).sort({ date: 1 });
     res.json(events);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
   }
 });
 
-router.get('/:id', auth, async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.id);
-
-    if (!event) {
-      return res.status(404).json({ msg: 'Event not found' });
-    }
-
-    res.json(event);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Event not found' });
-    }
-    res.status(500).send(SERVER_ERROR_MSG);
-  }
-});
-
 router.get('/bands', auth, async (req, res) => {
   try {
-    const bands = await Band.find({ user: req.user.id });
-    res.json(bands);
+    const events = await concert.find({ user: req.user.id });
+    const openersList = events.map(e => {
+      return e.bands.openers[0].split(',').map(o => o.trim());
+    });
+    const headlinersList = events.map(e => {
+      return e.bands.headliner;
+    });
+    const bandList = [].concat.apply(headlinersList, openersList).sort();
+
+    const counts = {};
+
+    for (let i = 0; i < bandList.length; i++) {
+      counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
+
+    res.json(result);
   } catch (err) {
-    return res.status(500).send(SERVER_ERROR_MSG);
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
   }
 });
 
-router.post(
+router.get('/cities', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const cityList = events.map(e => {
+      return e.city;
+    });
+
+    const counts = {};
+
+    for (let i = 0; i < cityList.length; i++) {
+      counts[cityList[i]] = (counts[cityList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
+  }
+});
+
+router.get('/venues', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const venueList = events.map(e => {
+      return e.venue;
+    });
+
+    const counts = {};
+
+    for (let i = 0; i < venueList.length; i++) {
+      counts[venueList[i]] = (counts[venueList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({
+      name: key,
+      instances: counts[key],
+    }));
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
+  }
+});
+
+// Create new event
+router.put(
   '/',
   [
     auth,
     [
-      check('bands', 'At least one band is required')
-        .not()
-        .isEmpty(),
-      check('city', 'City is required')
+      check('bands.headliner', 'At least one band is required')
         .not()
         .isEmpty(),
       check('venue', 'Venue is required')
+        .not()
+        .isEmpty(),
+      check('city', 'City is required')
         .not()
         .isEmpty(),
       check('date', 'Date is required')
@@ -67,57 +117,70 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('There was an error!');
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { bands: { headliner, openers }, city, venue, date } = req.body;
+    const {
+      bands: { headliner, openers },
+      city,
+      venue,
+      date,
+    } = req.body;
+
+    const newShow = {
+      bands: {
+        headliner,
+        openers,
+      },
+      city,
+      venue,
+      date,
+      user: req.user.id,
+    };
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
-
-      const newEvent = new Event({
-        bands: {
-          headliner: req.body.bands.headliner,
-          openers: req.body.bands.openers,
-        },
-        city: req.body.city,
-        venue: req.body.venue,
-        date: req.body.date,
+      const event = new concert({
+        bands: newShow.bands,
+        city: newShow.city,
+        venue: newShow.venue,
+        date: newShow.date,
+        user: req.user.id,
       });
 
-      const event = await newEvent.save();
-
-      const bandList = [];
-      bandList.push(headliner);
-      bandList.push(openers.split(','.trim()));
-
-      await bandList.forEach(b => { new Band({ name: b }).save(); });
+      await event.save();
 
       res.json(event);
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send(SERVER_ERROR_MSG);
+      console.error(err);
+      res.status(500).send('Server Error');
     }
   }
 );
 
-router.delete('/:event_id', auth, async (req, res) => {
+// Delete event
+router.delete('/:id', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
-    const showIds = profile.events.map(events => events._id.toString());
+    const foundEvent = await concert.findById(req.params.id);
 
-    const removeIndex = showIds.indexOf(req.params.event_id);
-
-    if (removeIndex === -1) {
-      return res.status(500).json({ msg: SERVER_ERROR_MSG });
-    } else {
-      profile.events.splice(removeIndex, 1);
-      await profile.save();
-      return res.status(200).json(profile);
+    if (!foundEvent) {
+      return res.status(404).json({ msg: 'Event not found' });
     }
+
+    if (foundEvent.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    await foundEvent.remove();
+
+    res.json({ msg: 'Event removed' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(SERVER_ERROR_MSG);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Event not found' });
+    }
+
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
   }
 });
 

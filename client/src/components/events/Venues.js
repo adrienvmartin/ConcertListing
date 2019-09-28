@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import VenueItem from './VenueItem';
-import { loadVenues } from '../../actions/profile';
+import { loadVenues } from '../../actions/event';
 
 const Venues = ({ loadVenues, venues, loading }) => {
   useEffect(
