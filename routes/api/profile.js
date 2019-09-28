@@ -121,14 +121,19 @@ router.get('/bands', auth, async (req, res) => {
 router.get('/cities', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const citiesList = events.map(e => {
+    const cityList = events.map(e => {
       return e.city;
     });
-    const filteredCities = citiesList.filter((item, index) => {
-      return citiesList.indexOf(item) >= index;
-    });
-    filteredCities.sort();
-    res.json(filteredCities);
+
+    const counts = {};
+
+    for (let i = 0; i < cityList.length; i++) {
+      counts[cityList[i]] = (counts[cityList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+
+    res.json(result);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
@@ -141,11 +146,16 @@ router.get('/venues', auth, async (req, res) => {
     const venueList = events.map(e => {
       return e.venue;
     });
-    const filteredList = venueList.filter((item, index) => {
-      return venueList.indexOf(item) >= index;
-    });
-    filteredList.sort();
-    res.json(filteredList);
+
+    const counts = {};
+
+    for (let i = 0; i < venueList.length; i++) {
+      counts[venueList[i]] = (counts[venueList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+
+    res.json(result);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
