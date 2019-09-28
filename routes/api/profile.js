@@ -95,13 +95,23 @@ router.get('/events', auth, async (req, res) => {
 router.get('/bands', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const openersList = events.map(e => { return e.bands.openers[0].split(',').map(o => o.trim()) });
-    const headlinersList = events.map(e => { return e.bands.headliner });
-    const bandList = [].concat.apply(headlinersList, openersList).sort();
-    const filteredList = bandList.filter((item, index) => {
-      return bandList.indexOf(item) >= index;
+    const openersList = events.map(e => {
+      return e.bands.openers[0].split(',').map(o => o.trim());
     });
-    res.json(filteredList);
+    const headlinersList = events.map(e => {
+      return e.bands.headliner;
+    });
+    const bandList = [].concat.apply(headlinersList, openersList).sort();
+
+    const counts = {};
+
+    for (let i = 0; i < bandList.length; i++) {
+      counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
+    }
+
+    const result = Object.keys(counts).map(key => ({ [key]: counts[key] }));
+
+    res.json(result);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
@@ -111,7 +121,9 @@ router.get('/bands', auth, async (req, res) => {
 router.get('/cities', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const citiesList = events.map(e => { return e.city });
+    const citiesList = events.map(e => {
+      return e.city;
+    });
     const filteredCities = citiesList.filter((item, index) => {
       return citiesList.indexOf(item) >= index;
     });
@@ -126,7 +138,9 @@ router.get('/cities', auth, async (req, res) => {
 router.get('/venues', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const venueList = events.map(e => { return e.venue });
+    const venueList = events.map(e => {
+      return e.venue;
+    });
     const filteredList = venueList.filter((item, index) => {
       return venueList.indexOf(item) >= index;
     });
