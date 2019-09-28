@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getCurrentProfile } from '../../actions/profile';
+import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
 
 const Dashboard = ({
   getCurrentProfile,
+  deleteAccount,
   auth: { user },
   profile: { profile, loading }
 }) => {
@@ -23,9 +24,15 @@ const Dashboard = ({
     <Fragment>
       <h1 className="large text-primary">Dashboard</h1>
       <p className="lead">
-        <i className="fas fa-user" />Welcome, {user && user.name}
+        <i className="fas fa-user" />
+        Welcome, {user && user.name}
       </p>
-      { profile !== null ? (
+      <div className="my-2">
+        <button className="btn btn-danger" onClick={() => deleteAccount()}>
+          Delete My Account
+        </button>
+      </div>
+      {profile !== null ? (
         <Fragment>
           Welcome back! Keep adding events to keep this up-to-date.
         </Fragment>
@@ -54,5 +61,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  { getCurrentProfile, deleteAccount }
 )(Dashboard);
