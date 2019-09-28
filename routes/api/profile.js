@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator/check');
 const { SERVER_ERROR_MSG, NO_PROFILE_MSG } = require('../../utils/constants');
 const Profile = require('../../models/Profile');
 const concert = require('../../models/Event');
-const band = require('../../models/Band');
+const Band = require('../../models/Band');
 const City = require('../../models/City');
 const Venue = require('../../models/Venue');
 const User = require('../../models/User');
@@ -85,20 +85,60 @@ router.delete('/', async (req, res) => {
 
 router.get('/events', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id })
-      .populate('user')
-      .populate('events')
-      .populate('bands')
-      .exec((err, posts) => {
-        console.log('Populated User: ' + err);
-      });
-    if (!profile) {
-      return res.status(400).json({ msg: 'There are no events for this user' });
-    }
-
-    res.json(profile);
+    const events = await concert.find({ user: req.user.id }).sort({ date: -1 });
+    res.json(events);
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+  }
+});
+
+router.get('/bands', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const bandList = [];
+    events.forEach(e => {
+      bandList.push(e.bands.headliner, e.bands.openers[0]);
+    });
+    bandList.sort();
+    res.json(bandList);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
+  }
+});
+
+router.get('/cities', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const citiesList = [];
+    events.forEach(e => {
+      citiesList.push(e.city);
+    });
+    const noDupes = citiesList.filter((item, index) => {
+      return citiesList.indexOf(item) >= index;
+    });
+    noDupes.sort();
+    res.json(noDupes);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
+  }
+});
+
+router.get('/venues', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const venueList = [];
+    events.forEach(e => {
+      venueList.push(e.venue);
+    });
+    const filteredList = venueList.filter((item, index) => {
+      return venueList.indexOf(item) >= index;
+    });
+    filteredList.sort();
+    res.json(filteredList);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
   }
 });
@@ -137,71 +177,29 @@ router.put(
       date,
     } = req.body;
 
-    const eventFields = {};
-    const bandField = {};
-    const cityField = {};
-    const venueField = {};
-
-    eventFields.bands = {};
-    eventFields.user = req.user.id;
-
-    if (headliner) {
-      eventFields.bands.headliner = headliner;
-      bandField.headliner = headliner;
-    }
-    if (openers) {
-      eventFields.bands.openers = openers
-        .split(',')
-        .map(opener => opener.trim());
-      bandField.openers = openers;
-    }
-    if (city) {
-      eventFields.city = city;
-      cityField.name = city;
-    }
-    if (venue) {
-      eventFields.venue = venue;
-      venueField.name = venue;
-    }
-    if (date) eventFields.date = date;
-
-    // Insert logic for checking bands/venues/cities - perhaps filter()?
-    // If they match an existing entry, do nothing, if they don't then create new one
-    // *** Check logic ***
-    // if (band match exists) { return null; }
-    // else if (!band match exists) { const bandName = new Band({ *schema info* }) }
-    //
-    //
-    // For every band added, iterate through array of existing bands
-    // If entry exists, reference it and update its instances, venues, cities, etc.
-    // If entry doesn't exist, create new one and set default/initial instances, venues, cities, etc.
-    // Do the same for cities and venues
-
-    // Do all of this in the events API instead, and then use findOne or insertOne or something to get that event data into the user profile?
+    const newShow = {
+      bands: {
+        headliner,
+        openers,
+      },
+      city,
+      venue,
+      date,
+      user: req.user.id,
+    };
 
     try {
-      const newShow = new concert({
-        bands: req.body.bands,
-        date: req.body.date,
-        city: req.body.city,
-        venue: req.body.venue,
+      const event = new concert({
+        bands: newShow.bands,
+        city: newShow.city,
+        venue: newShow.venue,
+        date: newShow.date,
+        user: req.user.id,
       });
 
-      const newBand = new band({
-        name: req.body.bands.headliner,
-        instanceCount: 1,
-      });
+      await event.save();
 
-      const event = await newShow.save();
-      const group = await newBand.save();
-
-      let profile = await Profile.findOneAndUpdate(
-        // Create Event document based on Schema, and query that instead?
-        { user: req.user.id },
-        { events: event, bands: group },
-        { new: true, upsert: true }
-      );
-      res.json(profile);
+      res.json(event);
     } catch (err) {
       console.error(err);
       res.status(500).send('Server Error');
