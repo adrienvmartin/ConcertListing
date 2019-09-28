@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { createEvent } from '../../actions/profile';
 
-const AddEvent = ({ createEvent }) => {
+const AddEvent = ({ createEvent, history }) => {
   const [formData, setFormData] = useState({
     bands: {
       headliner: '',
@@ -25,7 +25,7 @@ const AddEvent = ({ createEvent }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    createEvent(formData);
+    createEvent(formData, history);
   };
 
   return (

@@ -18,6 +18,7 @@ const Bands = ({ loadBands, bands, loading }) => {
   ) : (
     <Fragment>
       <h1 className="large text-primary">Bands</h1>
+      {bands.length > 0 ? (
       <Fragment>
         <table className="table">
           <thead>
@@ -33,7 +34,12 @@ const Bands = ({ loadBands, bands, loading }) => {
           </tbody>
         </table>
       </Fragment>
-      <div className="events" />
+      )
+      : (
+        <Fragment>
+          You have not seen any bands yet.
+        </Fragment>
+        )}
     </Fragment>
   );
 };

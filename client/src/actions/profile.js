@@ -29,7 +29,11 @@ export const getCurrentProfile = () => async dispatch => {
   }
 };
 
-export const createProfile = (formData, history, edit = false) => async dispatch => {
+export const createProfile = (
+  formData,
+  history,
+  edit = false
+) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -127,7 +131,7 @@ export const loadVenues = () => async dispatch => {
   }
 };
 
-export const createEvent = formData => async dispatch => {
+export const createEvent = (formData, history) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -143,6 +147,7 @@ export const createEvent = formData => async dispatch => {
     });
 
     dispatch(setAlert('Show added', 'success'));
+    history.push('/events');
   } catch (err) {
     const errors = err.response.data.errors;
 

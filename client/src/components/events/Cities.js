@@ -18,22 +18,25 @@ const Cities = ({ loadCities, cities, loading }) => {
   ) : (
     <Fragment>
       <h1 className="large text-primary">Cities</h1>
-      <Fragment>
-        <table className="table">
-          <thead>
-          <tr>
-            <th>City</th>
-            <th>Number Of Events</th>
-          </tr>
-          </thead>
-          <tbody>
-          {cities.map(c => (
-            <CityItem key={c._id} city={c} />
-          ))}
-          </tbody>
-        </table>
-      </Fragment>
-      <div className="events" />
+      {cities.length > 0 ? (
+        <Fragment>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Number Of Events</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cities.map(c => (
+                <CityItem key={c._id} city={c} />
+              ))}
+            </tbody>
+          </table>
+        </Fragment>
+      ) : (
+        <Fragment>You have not been to any cities yet.</Fragment>
+      )}
     </Fragment>
   );
 };

@@ -18,6 +18,7 @@ const Events = ({ loadEvents, event: { events, loading } }) => {
   ) : (
     <Fragment>
       <h1 className="large text-primary">Events</h1>
+      { events.length > 0 ? (
       <Fragment>
         <table className="table">
           <thead>
@@ -37,7 +38,11 @@ const Events = ({ loadEvents, event: { events, loading } }) => {
           </tbody>
         </table>
       </Fragment>
-      <div className="events" />
+        ) : (
+          <Fragment>
+            You have not created any events yet.
+          </Fragment>)
+      }
     </Fragment>
   );
 };

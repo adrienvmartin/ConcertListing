@@ -18,22 +18,25 @@ const Venues = ({ loadVenues, venues, loading }) => {
   ) : (
     <Fragment>
       <h1 className="large text-primary">Venues</h1>
-      <Fragment>
-        <table className="table">
-          <thead>
-          <tr>
-            <th>Venue</th>
-            <th>Number Of Events</th>
-          </tr>
-          </thead>
-          <tbody>
-          {venues.map(v => (
-            <VenueItem key={v._id} venue={v} />
-          ))}
-          </tbody>
-        </table>
-      </Fragment>
-      <div className="events" />
+      {venues.length > 0 ? (
+        <Fragment>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Venue</th>
+                <th>Number Of Events</th>
+              </tr>
+            </thead>
+            <tbody>
+              {venues.map(v => (
+                <VenueItem key={v._id} venue={v} />
+              ))}
+            </tbody>
+          </table>
+        </Fragment>
+      ) : (
+        <Fragment>You have not been to any venues yet.</Fragment>
+      )}
     </Fragment>
   );
 };
