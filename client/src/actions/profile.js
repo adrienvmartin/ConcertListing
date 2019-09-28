@@ -47,7 +47,7 @@ export const createProfile = () => async dispatch => {
   }
 };
 
-export const loadEvents = async dispatch => {
+export const loadEvents = () => async dispatch => {
   try {
     const res = await axios.get('/api/profile/events');
 
