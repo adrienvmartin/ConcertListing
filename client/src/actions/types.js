@@ -20,3 +20,4 @@ export const LOAD_BANDS = 'LOAD_BANDS';
 export const LOAD_CITIES = 'LOAD_CITIES';
 export const LOAD_VENUES = 'LOAD_VENUES';
 export const LOADING_ERROR = 'LOADING_ERROR';
+export const ACCOUNT_DELETED = 'ACCOUNT_DELETED';

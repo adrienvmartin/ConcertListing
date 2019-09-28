@@ -7,7 +7,10 @@ import {
   LOAD_EVENTS,
   LOAD_BANDS,
   LOAD_CITIES,
-  LOAD_VENUES, LOADING_ERROR
+  LOAD_VENUES,
+  LOADING_ERROR,
+  CLEAR_PROFILE,
+  ACCOUNT_DELETED
 } from './types';
 import { setAlert } from './alert';
 
@@ -26,7 +29,7 @@ export const getCurrentProfile = () => async dispatch => {
   }
 };
 
-export const createProfile = () => async dispatch => {
+export const createProfile = (formData, history, edit = false) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -41,7 +44,11 @@ export const createProfile = () => async dispatch => {
       payload: res.data
     });
 
-    dispatch(setAlert('Profile Created', 'success'));
+    dispatch(setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success'));
+
+    if (!edit) {
+      history.push('/dashboard');
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -67,7 +74,7 @@ export const loadEvents = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: LOADING_ERROR,
-      payload: err,
+      payload: err
     });
   }
 };
@@ -83,7 +90,7 @@ export const loadBands = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: LOADING_ERROR,
-      payload: err,
+      payload: err
     });
   }
 };
@@ -99,7 +106,7 @@ export const loadCities = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: LOADING_ERROR,
-      payload: err,
+      payload: err
     });
   }
 };
@@ -115,7 +122,7 @@ export const loadVenues = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: LOADING_ERROR,
-      payload: err,
+      payload: err
     });
   }
 };
@@ -165,5 +172,23 @@ export const deleteEvent = id => async dispatch => {
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
+  }
+};
+
+export const deleteAccount = () => async dispatch => {
+  if (window.confirm('Are you sure? This can NOT be undone!')) {
+    try {
+      await axios.delete('/api/profile');
+
+      dispatch({ type: CLEAR_PROFILE });
+      dispatch({ type: ACCOUNT_DELETED });
+
+      dispatch(setAlert('Your account has been permanently deleted'));
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+    }
   }
 };

@@ -6,6 +6,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
+import CreateProfile from './components/form/CreateProfile';
 import Events from './components/events/Events';
 import Bands from './components/events/Bands';
 import Venues from './components/events/Venues';
@@ -45,6 +46,7 @@ const App = () => {
               <PrivateRoute exact path="/venues" component={Venues} />
               <PrivateRoute exact path="/cities" component={Cities} />
               <PrivateRoute exact path="/add-event" component={AddEvent} />
+              <PrivateRoute exact path="/create-profile" component={CreateProfile} />
             </Switch>
           </section>
         </Fragment>
