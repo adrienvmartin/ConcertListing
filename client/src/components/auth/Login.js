@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
+import { TextField, Button } from '@material-ui/core';
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const Login = ({ login, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />
+    return <Redirect to="/dashboard" />;
   }
 
   return (
@@ -33,7 +34,7 @@ const Login = ({ login, isAuthenticated }) => {
       </p>
       <form className="form" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
-          <input
+          <TextField
             type="email"
             placeholder="Email Address"
             name="email"
@@ -43,16 +44,16 @@ const Login = ({ login, isAuthenticated }) => {
           />
         </div>
         <div className="form-group">
-          <input
+          <TextField
             type="password"
             placeholder="Password"
             name="password"
             value={password}
             onChange={e => onChange(e)}
-            minLength="6"
+            required
           />
         </div>
-        <input type="submit" className="btn btn-primary" value="Login" />
+        <Button type="submit" value="Login" variant="contained">Login</Button>
       </form>
       <p className="my-1">
         Don't have an account? <Link to="/register">Sign Up</Link>
@@ -63,12 +64,12 @@ const Login = ({ login, isAuthenticated }) => {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
-})
+});
 
 export default connect(
   mapStateToProps,

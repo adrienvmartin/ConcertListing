@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import { TextField, Button } from '@material-ui/core';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       </p>
       <form className="form" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
-          <input
+          <TextField
             type="text"
             placeholder="Name"
             name="name"
@@ -50,33 +51,36 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
           />
         </div>
         <div className="form-group">
-          <input
+          <TextField
             type="email"
             placeholder="Email Address"
             name="email"
             value={email}
             onChange={e => onChange(e)}
+            required
           />
         </div>
         <div className="form-group">
-          <input
+          <TextField
             type="password"
             placeholder="Password"
             name="password"
             value={password}
             onChange={e => onChange(e)}
+            required
           />
         </div>
         <div className="form-group">
-          <input
+          <TextField
             type="password"
             placeholder="Confirm Password"
             name="password2"
             value={password2}
             onChange={e => onChange(e)}
+            required
           />
         </div>
-        <input type="submit" className="btn btn-primary" value="Register" />
+        <Button type="submit" variant="contained" value="Register">Register</Button>
       </form>
       <p className="my-1">
         Already have an account? <Link to="/login">Sign In </Link>
