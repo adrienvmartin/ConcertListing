@@ -2,8 +2,14 @@ import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import BandItem from './BandItem';
 import { loadBands } from '../../actions/event';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
 
 const Bands = ({ loadBands, bands, loading }) => {
   useEffect(
@@ -13,6 +19,10 @@ const Bands = ({ loadBands, bands, loading }) => {
     [loadBands]
   );
 
+  const createData = (bandName, events) => {
+    return { bandName, events };
+  };
+
   return loading ? (
     <Spinner />
   ) : (
@@ -20,19 +30,24 @@ const Bands = ({ loadBands, bands, loading }) => {
       <h1 className="large text-primary">Bands</h1>
       {bands.length > 0 ? (
         <Fragment>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Band Name</th>
-                <th>Number Of Events</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table size="small" aria-label="band listing">
+            <TableHead>
+              <TableRow>
+                <TableCell>Band Name</TableCell>
+                <TableCell>Number Of Times Seen</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {bands.map(b => (
-                <BandItem key={b._id} band={b} />
+                <TableRow key={b._id}>
+                  <TableCell component="th" scope="row">
+                    {b.name}
+                  </TableCell>
+                  <TableCell>{b.instances}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </Fragment>
       ) : (
         <Fragment>You have not seen any bands yet.</Fragment>
