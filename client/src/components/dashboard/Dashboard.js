@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -40,9 +41,7 @@ const Dashboard = ({
         </Fragment>
       )}
       <div className="my-2">
-        <button className="btn btn-danger" onClick={() => deleteAccount()}>
-          Delete My Account
-        </button>
+        <Button variant="contained" color="secondary" onClick={() => deleteAccount()}>Delete My Account</Button>
       </div>
     </Fragment>
   );
