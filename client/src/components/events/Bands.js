@@ -16,10 +16,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const createData = (id, name, instances) => {
-  return { id, name, instances };
-};
-
 const desc = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -48,11 +44,11 @@ const getSorting = (order, orderBy) => {
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Band Name' },
-  { id: 'seen', numeric: true, disablePadding: false, label: 'Times Seen' },
+  { id: 'seen', numeric: false, disablePadding: false, label: 'Times Seen' },
 ];
 
 const EnhancedTableHead = props => {
-  const { order, orderBy, onRequestSort } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
@@ -71,6 +67,11 @@ const EnhancedTableHead = props => {
               onClick={createSortHandler(h.id)}
             >
               {h.label}
+              {orderBy === h.id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -101,10 +102,11 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     width: '100%',
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750
+    minWidth: 750,
+    margin: 10,
   },
   visuallyHidden: {
     border: 0,
@@ -128,14 +130,14 @@ const Bands = ({ loadBands, bands, loading }) => {
   );
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('name'); // when you click, does it change setOrderBy?
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const rows = [];
 
   bands.forEach(b => {
-    rows.push(createData(b._id, b.name, b.instances));
+    rows.push({ name: b.name, instances: b.instances });
   });
 
   const handleRequestSort = (event, property) => {
@@ -156,7 +158,7 @@ const Bands = ({ loadBands, bands, loading }) => {
   return loading ? (
     <Spinner />
   ) : (
-    <Fragment>
+    <div className={classes.root}>
       <br />
       <h1>Bands</h1>
       {bands.length > 0 ? (
@@ -174,7 +176,7 @@ const Bands = ({ loadBands, bands, loading }) => {
                 {stableSort(rows, getSorting(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                    const labelId = `enhanced-table-${index}`;
 
                     return (
                       <TableRow hover key={row.name}>
@@ -206,7 +208,7 @@ const Bands = ({ loadBands, bands, loading }) => {
       ) : (
         <Fragment>You have not seen any bands yet.</Fragment>
       )}
-    </Fragment>
+    </div>
   );
 };
 
