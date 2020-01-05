@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -9,7 +9,100 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableSortLabel,
+  TablePagination,
+  TableContainer,
+  Paper,
+  makeStyles
 } from '@material-ui/core';
+
+const createData = (name, instances) => {
+  return { name, instances };
+};
+
+const desc = (a, b, orderBy) => {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+};
+
+const stableSort = (array, cmp) => {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = cmp(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map(el => el[0]);
+};
+
+const getSorting = (order, orderBy) => {
+  return order === 'desc'
+    ? (a, b) => desc(a, b, orderBy)
+    : (a, b) => -desc(a, b, orderBy);
+};
+
+const headCells = [
+  { id: 'name', numeric: false, disablePadding: true, label: 'Band Name' },
+  { id: 'seen', numeric: true, disablePadding: false, label: 'Times Seen' },
+  { id: 'actions', numeric: false, label: 'Actions' }
+];
+
+const EnhancedTableHead = props => {
+  const { order, orderBy, onRequestSort } = props;
+  const createSortHandler = property => event => {
+    onRequestSort(event, property);
+  };
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map(h => (
+          <TableCell
+            key={h.id}
+            padding={h.disablePadding ? 'none' : 'default'}
+            sortDirection={orderBy === h.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === h.id}
+              direction={orderBy === h.id ? order : 'asc'}
+              onClick={createSortHandler(h.id)}
+            >
+              {h.label}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%'
+  },
+  paper: {
+    width: '100%',
+    marginBottom: theme.spacing(2)
+  },
+  table: {
+    minWidth: 750
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1
+  }
+}));
 
 const Bands = ({ loadBands, bands, loading }) => {
   useEffect(
@@ -18,40 +111,77 @@ const Bands = ({ loadBands, bands, loading }) => {
     },
     [loadBands]
   );
+  const classes = useStyles();
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const createData = (bandName, events) => {
-    return { bandName, events };
+  const rows = [];
+
+  bands.forEach(b => {
+    rows.push(createData(b.name, b.instances));
+  });
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
   };
 
-  return loading ? (
-    <Spinner />
-  ) : (
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  return (
     <Fragment>
-      <h1 className="large text-primary">Bands</h1>
-      {bands.length > 0 ? (
-        <Fragment>
-          <Table size="small" aria-label="band listing">
-            <TableHead>
-              <TableRow>
-                <TableCell>Band Name</TableCell>
-                <TableCell>Number Of Times Seen</TableCell>
-              </TableRow>
-            </TableHead>
+      <Paper>
+        <TableContainer>
+          <Table className={classes.table}>
+            <EnhancedTableHead
+              classes={classes}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
             <TableBody>
-              {bands.map(b => (
-                <TableRow key={b._id}>
-                  <TableCell component="th" scope="row">
-                    {b.name}
-                  </TableCell>
-                  <TableCell>{b.instances}</TableCell>
-                </TableRow>
-              ))}
+              {stableSort(rows, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow hover>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.instances}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
-        </Fragment>
-      ) : (
-        <Fragment>You have not seen any bands yet.</Fragment>
-      )}
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
     </Fragment>
   );
 };
