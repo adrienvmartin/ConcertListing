@@ -16,8 +16,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const createData = (name, instances) => {
-  return { name, instances };
+const createData = (id, name, instances) => {
+  return { id, name, instances };
 };
 
 const desc = (a, b, orderBy) => {
@@ -49,7 +49,6 @@ const getSorting = (order, orderBy) => {
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Band Name' },
   { id: 'seen', numeric: true, disablePadding: false, label: 'Times Seen' },
-  { id: 'actions', numeric: false, label: 'Actions' }
 ];
 
 const EnhancedTableHead = props => {
@@ -78,6 +77,22 @@ const EnhancedTableHead = props => {
       </TableRow>
     </TableHead>
   );
+};
+
+EnhancedTableHead.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+EnhancedTableHead.defaultProps = {
+  classes: {},
+  onRequestSort: () => {},
+  order: 'asc',
+  orderBy: 'name',
+  rowCount: '25',
 };
 
 const useStyles = makeStyles(theme => ({
@@ -115,12 +130,12 @@ const Bands = ({ loadBands, bands, loading }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const rows = [];
 
   bands.forEach(b => {
-    rows.push(createData(b.name, b.instances));
+    rows.push(createData(b._id, b.name, b.instances));
   });
 
   const handleRequestSort = (event, property) => {
@@ -138,57 +153,66 @@ const Bands = ({ loadBands, bands, loading }) => {
     setPage(0);
   };
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <Fragment>
-      <Paper>
-        <TableContainer>
-          <Table className={classes.table}>
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
+      <br />
+      <h1>Bands</h1>
+      {bands.length > 0 ? (
+        <Paper className={classes.paper}>
+          <TableContainer>
+            <Table className={classes.table} size='small'>
+              <EnhancedTableHead
+                classes={classes}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+              />
+              <TableBody>
+                {stableSort(rows, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow hover>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell>{row.instances}</TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
+                    return (
+                      <TableRow hover key={row.name}>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.name}
+                        </TableCell>
+                        <TableCell>{row.instances}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Paper>
+      ) : (
+        <Fragment>You have not seen any bands yet.</Fragment>
+      )}
     </Fragment>
   );
 };
 
 Bands.propTypes = {
   loadBands: PropTypes.func.isRequired,
-  bands: PropTypes.object.isRequired
+  bands: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
