@@ -44,7 +44,7 @@ const getSorting = (order, orderBy) => {
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Band Name' },
-  { id: 'seen', numeric: false, disablePadding: false, label: 'Times Seen' },
+  { id: 'instances', numeric: false, disablePadding: false, label: 'Times Seen' },
 ];
 
 const EnhancedTableHead = props => {
