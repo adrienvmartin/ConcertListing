@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import EventItem from './EventItem';
 import { loadEvents } from '../../actions/event';
 import Spinner from '../layout/Spinner';
+import ListingsTable from './ListingsTable';
 
 const Events = ({ loadEvents, event: { events, loading } }) => {
   useEffect(
@@ -20,23 +21,7 @@ const Events = ({ loadEvents, event: { events, loading } }) => {
       <h1 className="large text-primary">Events</h1>
       {events.length > 0 ? (
         <Fragment>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Headliner</th>
-                <th>Openers</th>
-                <th>Venue</th>
-                <th>City</th>
-                <th>Date</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {events.map(ev => (
-                <EventItem key={ev._id} event={ev} />
-              ))}
-            </tbody>
-          </table>
+         <ListingsTable data={events} />
         </Fragment>
       ) : (
         <Fragment>You have not created any events yet.</Fragment>
