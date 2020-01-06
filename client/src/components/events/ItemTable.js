@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -123,11 +123,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ItemTable = ({
-  data,
-  blankMessage,
-  headerTitle
-}) => {
+const ItemTable = ({ data, headerTitle }) => {
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name'); // when you click, does it change setOrderBy?
@@ -158,65 +154,57 @@ const ItemTable = ({
   return (
     <div className={classes.root}>
       <br />
-      {data.length > 0 ? (
-        <Paper className={classes.paper}>
-          <h1>{headerTitle}</h1>
-          <TableContainer>
-            <Table className={classes.table} size="small">
-              <EnhancedTableHead
-                classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {stableSort(rows, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const labelId = `enhanced-table-${index}`;
+      <Paper className={classes.paper}>
+        <h1>{headerTitle}</h1>
+        <TableContainer>
+          <Table className={classes.table} size="small">
+            <EnhancedTableHead
+              classes={classes}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {stableSort(rows, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const labelId = `enhanced-table-${index}`;
 
-                    return (
-                      <TableRow hover key={row.name}>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          {row.name}
-                        </TableCell>
-                        <TableCell>{row.instances}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Paper>
-      ) : (
-        <Fragment>
-          <h1>{headerTitle}</h1>
-          {blankMessage}
-        </Fragment>
-      )}
+                  return (
+                    <TableRow hover key={row.name}>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.instances}</TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
     </div>
   );
 };
 
 ItemTable.propTypes = {
   data: PropTypes.array.isRequired,
-  blankMessage: PropTypes.string.isRequired,
-  headerTitle: PropTypes.string.isRequired,
+  headerTitle: PropTypes.string.isRequired
 };
 
 export default ItemTable;

@@ -6,7 +6,6 @@ import { loadVenues } from '../../actions/event';
 import ItemTable from './ItemTable';
 
 const title = 'Venues';
-const message = 'You have not been to any venues yet.';
 
 const Venues = ({ loadVenues, venues, loading }) => {
   useEffect(
@@ -20,7 +19,7 @@ const Venues = ({ loadVenues, venues, loading }) => {
     <Spinner />
   ) : (
     <Fragment>
-      <ItemTable headerTitle={title} blankMessage={message} data={venues} />
+      <ItemTable headerTitle={title} data={venues} />
     </Fragment>
   );
 };

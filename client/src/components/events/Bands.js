@@ -5,8 +5,7 @@ import { loadBands } from '../../actions/event';
 import ItemTable from './ItemTable';
 import Spinner from '../layout/Spinner';
 
-const blankMessage = 'You have not seen any bands yet.';
-const headerTitle = 'Bands';
+const title = 'Bands';
 
 const Bands = ({ loadBands, bands, loading }) => {
   useEffect(
@@ -22,8 +21,7 @@ const Bands = ({ loadBands, bands, loading }) => {
     <Fragment>
       <ItemTable
         data={bands}
-        blankMessage={blankMessage}
-        headerTitle={headerTitle}
+        headerTitle={title}
       />
     </Fragment>
   );
