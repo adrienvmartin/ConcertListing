@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { deleteEvent } from '../../actions/event';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -12,6 +14,8 @@ import {
   Paper,
   makeStyles
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 
 const desc = (a, b, orderBy) => {
@@ -59,6 +63,12 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'Date'
+  },
+  {
+    id: 'actions',
+    numeric: false,
+    disablePadding: false,
+    label: 'Actions'
   }
 ];
 
@@ -136,7 +146,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListingsTable = ({ data }) => {
+const ListingsTable = ({ data, deleteEvent }) => {
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -146,7 +156,14 @@ const ListingsTable = ({ data }) => {
   const rows = [];
 
   data.forEach(d => {
-    rows.push({ headliner: d.bands.headliner, openers: d.bands.openers, city: d.city, venue: d.venue, date: d.date });
+    rows.push({
+      id: d._id,
+      headliner: d.bands.headliner,
+      openers: d.bands.openers,
+      city: d.city,
+      venue: d.venue,
+      date: d.date
+    });
   });
 
   const handleRequestSort = (event, property) => {
@@ -185,7 +202,7 @@ const ListingsTable = ({ data }) => {
                   const labelId = `enhanced-table-${index}`;
 
                   return (
-                    <TableRow hover key={row._id}>
+                    <TableRow hover key={row.id}>
                       <TableCell
                         component="th"
                         id={labelId}
@@ -196,7 +213,14 @@ const ListingsTable = ({ data }) => {
                       </TableCell>
                       <TableCell>{row.venue}</TableCell>
                       <TableCell>{row.city}</TableCell>
-                      <TableCell>{moment(row.date).format('MMMM Do, YYYY')}</TableCell>
+                      <TableCell>
+                        {moment(row.date).format('MMMM Do, YYYY')}
+                      </TableCell>
+                      <TableCell>
+                          <EditIcon />
+                        {'     '}
+                        <DeleteIcon onClick={() => deleteEvent(row.id)} />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -218,7 +242,7 @@ const ListingsTable = ({ data }) => {
 };
 
 ListingsTable.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired
 };
 
-export default ListingsTable;
+export default connect(null, { deleteEvent })(ListingsTable);
