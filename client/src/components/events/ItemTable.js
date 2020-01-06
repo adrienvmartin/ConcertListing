@@ -124,17 +124,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ItemTable = ({
-  loadFunction,
   data,
   blankMessage,
   headerTitle
 }) => {
-  useEffect(
-    () => {
-      loadFunction();
-    },
-    [loadFunction]
-  );
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name'); // when you click, does it change setOrderBy?
@@ -221,9 +214,9 @@ const ItemTable = ({
 };
 
 ItemTable.propTypes = {
-  loadFunction: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
-  blankMessage: PropTypes.string.isRequired
+  blankMessage: PropTypes.string.isRequired,
+  headerTitle: PropTypes.string.isRequired,
 };
 
 export default ItemTable;

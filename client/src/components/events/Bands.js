@@ -22,8 +22,6 @@ const Bands = ({ loadBands, bands, loading }) => {
     <Fragment>
       <ItemTable
         data={bands}
-        loadFunction={loadBands}
-        loading={loading}
         blankMessage={blankMessage}
         headerTitle={headerTitle}
       />
