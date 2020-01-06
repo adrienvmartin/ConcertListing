@@ -145,12 +145,8 @@ const ListingsTable = ({ data }) => {
 
   const rows = [];
 
-  const bandParser = (headliner, openers) => {
-    return `${headliner} w/ ${openers}`;
-  };
-
   data.forEach(d => {
-    rows.push({ bands: bandParser(d.bands.headliner, d.bands.openers), city: d.city, venue: d.venue, date: d.date });
+    rows.push({ headliner: d.bands.headliner, openers: d.bands.openers, city: d.city, venue: d.venue, date: d.date });
   });
 
   const handleRequestSort = (event, property) => {
@@ -196,7 +192,7 @@ const ListingsTable = ({ data }) => {
                         scope="row"
                         padding="none"
                       >
-                        {row.bands}
+                        <b>{row.headliner}</b> w/ {row.openers}
                       </TableCell>
                       <TableCell>{row.venue}</TableCell>
                       <TableCell>{row.city}</TableCell>
