@@ -126,7 +126,7 @@ const useStyles = makeStyles(theme => ({
 const ItemTable = ({ data, headerTitle }) => {
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name'); // when you click, does it change setOrderBy?
+  const [orderBy, setOrderBy] = useState('name');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
