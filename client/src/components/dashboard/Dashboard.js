@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
-import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
 const Dashboard = ({
@@ -28,18 +27,9 @@ const Dashboard = ({
         <i className="fas fa-user" />
         Welcome, {user && user.name}
       </p>
-      {profile !== null ? (
         <Fragment>
           Welcome back! Keep adding events to keep this up-to-date.
         </Fragment>
-      ) : (
-        <Fragment>
-          <p>You have not yet setup a profile, why not do it now?</p>
-          <Link to="/create-profile" className="btn btn-primary my-1">
-            Create Your Profile
-          </Link>
-        </Fragment>
-      )}
       <div className="my-2">
         <Button variant="contained" color="secondary" onClick={() => deleteAccount()}>Delete My Account</Button>
       </div>
