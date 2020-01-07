@@ -15,27 +15,49 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+const getBandCounts = events => {
+  const openersList = events.map(e => {
+    return e.bands.openers[0].split(',').map(o => o.trim());
+  });
+  const headlinersList = events.map(e => {
+    return e.bands.headliner;
+  });
+  const bandList = [].concat.apply(headlinersList, openersList).sort();
+
+  const counts = {};
+
+  for (let i = 0; i < bandList.length; i++) {
+    counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
+  }
+
+  return Object.keys(counts).map(key => ({
+    name: key,
+    instances: counts[key],
+  }));
+};
+
+getOtherCounts = (events, param) => {
+  const list = events.map(e => {
+    return e[param];
+  });
+
+  const counts = {};
+
+  for (let i = 0; i < list.length; i++) {
+    counts[list[i]] = (counts[list[i]] || 0) + 1;
+  }
+
+  return Object.keys(counts).map(key => ({
+    name: key,
+    instances: counts[key],
+  }));
+};
+
 router.get('/bands', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const openersList = events.map(e => {
-      return e.bands.openers[0].split(',').map(o => o.trim());
-    });
-    const headlinersList = events.map(e => {
-      return e.bands.headliner;
-    });
-    const bandList = [].concat.apply(headlinersList, openersList).sort();
 
-    const counts = {};
-
-    for (let i = 0; i < bandList.length; i++) {
-      counts[bandList[i]] = (counts[bandList[i]] || 0) + 1;
-    }
-
-    const result = Object.keys(counts).map(key => ({
-      name: key,
-      instances: counts[key],
-    }));
+    const result = getBandCounts(events);
 
     res.json(result);
   } catch (err) {
@@ -47,20 +69,8 @@ router.get('/bands', auth, async (req, res) => {
 router.get('/cities', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const cityList = events.map(e => {
-      return e.city;
-    });
 
-    const counts = {};
-
-    for (let i = 0; i < cityList.length; i++) {
-      counts[cityList[i]] = (counts[cityList[i]] || 0) + 1;
-    }
-
-    const result = Object.keys(counts).map(key => ({
-      name: key,
-      instances: counts[key],
-    }));
+    const result = getOtherCounts(events, 'city');
 
     res.json(result);
   } catch (err) {
@@ -72,22 +82,31 @@ router.get('/cities', auth, async (req, res) => {
 router.get('/venues', auth, async (req, res) => {
   try {
     const events = await concert.find({ user: req.user.id });
-    const venueList = events.map(e => {
-      return e.venue;
-    });
 
-    const counts = {};
-
-    for (let i = 0; i < venueList.length; i++) {
-      counts[venueList[i]] = (counts[venueList[i]] || 0) + 1;
-    }
-
-    const result = Object.keys(counts).map(key => ({
-      name: key,
-      instances: counts[key],
-    }));
+    const result = getOtherCounts(events, 'venue');
 
     res.json(result);
+  } catch (err) {
+    res.status(500).send({ msg: SERVER_ERROR_MSG });
+    console.error(err);
+  }
+});
+
+router.get('/stats', auth, async (req, res) => {
+  try {
+    const events = await concert.find({ user: req.user.id });
+    const eventCount = events.length;
+    const bands = getBandCounts(events).length;
+    const cities = getOtherCounts(events, 'city').length;
+    const venues = getOtherCounts(events, 'venue').length;
+
+    const countObject = {
+      eventCount,
+      bands,
+      cities,
+      venues,
+    };
+    res.json(countObject);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG });
     console.error(err);
