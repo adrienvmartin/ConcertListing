@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
@@ -12,6 +12,9 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 
 const AddEvent = ({ createEvent, history }) => {
+  const today = new Date();
+  const fullDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
   const [formData, setFormData] = useState({
     bands: {
       headliner: '',
@@ -19,9 +22,9 @@ const AddEvent = ({ createEvent, history }) => {
     },
     city: '',
     venue: '',
-    date: ''
+    date: '',
   });
-  const [selectedDate, setSelectedDate] = useState(new Date('2020-01-01'));
+  const [selectedDate, setSelectedDate] = useState(fullDate.toString());
 
   const {
     bands: { headliner, openers },
@@ -43,8 +46,8 @@ const AddEvent = ({ createEvent, history }) => {
     setSelectedDate(date);
     setFormData({
       ...formData,
-      date: selectedDate
-    })
+      date: date
+    });
   };
 
   const onSubmit = e => {
