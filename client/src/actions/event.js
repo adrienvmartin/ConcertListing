@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   ADD_SHOW,
-  DELETE_SHOW, GET_STATS,
+  DELETE_SHOW,
   LOAD_BANDS,
   LOAD_CITIES,
   LOAD_EVENTS,
@@ -117,7 +117,8 @@ export const deleteEvent = id => async dispatch => {
       payload: res.data
     });
 
-    dispatch(setAlert('Event Removed', 'success'));
+    window.location.reload();
+    dispatch(setAlert('Event Removed', 'success'));;
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
