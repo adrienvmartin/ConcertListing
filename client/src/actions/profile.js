@@ -3,7 +3,7 @@ import {
   GET_PROFILE,
   PROFILE_ERROR,
   CLEAR_PROFILE,
-  ACCOUNT_DELETED
+  ACCOUNT_DELETED, GET_STATS, LOADING_ERROR
 } from './types';
 import { setAlert } from './alert';
 
@@ -18,6 +18,21 @@ export const getCurrentProfile = () => async dispatch => {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const getStats = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/events/stats');
+    dispatch({
+      type: GET_STATS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err
     });
   }
 };

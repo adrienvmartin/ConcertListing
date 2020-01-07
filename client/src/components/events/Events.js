@@ -1,13 +1,15 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loadEvents, getStats } from '../../actions/event';
+import { loadEvents } from '../../actions/event';
+import { getStats } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 import ListingsTable from './ListingsTable';
 
 const Events = ({
   loadEvents,
-  event: { events, loading, stats },
+  event: { events, loading },
+  stats,
   getStats
 }) => {
   useEffect(
@@ -54,7 +56,8 @@ Events.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  event: state.event
+  event: state.event,
+  stats: state.profile.stats
 });
 
 export default connect(

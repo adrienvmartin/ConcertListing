@@ -27,21 +27,6 @@ export const loadEvents = () => async dispatch => {
   }
 };
 
-export const getStats = () => async dispatch => {
-  try {
-    const res = await axios.get('/api/events/stats');
-    dispatch({
-      type: GET_STATS,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: LOADING_ERROR,
-      payload: err
-    });
-  }
-};
-
 export const loadBands = () => async dispatch => {
   try {
     const res = await axios.get('/api/events/bands');
