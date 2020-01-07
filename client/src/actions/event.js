@@ -1,11 +1,13 @@
 import axios from 'axios';
 import {
-  ADD_SHOW, DELETE_SHOW,
+  ADD_SHOW,
+  DELETE_SHOW,
   LOAD_BANDS,
   LOAD_CITIES,
   LOAD_EVENTS,
   LOAD_VENUES,
-  LOADING_ERROR, PROFILE_ERROR
+  LOADING_ERROR,
+  PROFILE_ERROR
 } from './types';
 import { setAlert } from './alert';
 
@@ -81,7 +83,7 @@ export const createEvent = (formData, history) => async dispatch => {
       }
     };
 
-    const res = await axios.put(`/api/events`, formData, config);
+    const res = await axios.post(`/api/events`, formData, config);
 
     dispatch({
       type: ADD_SHOW,
