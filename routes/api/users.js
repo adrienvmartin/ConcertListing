@@ -2,7 +2,7 @@ const express = require('express');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
+const keys = require('../../config/keys');
 const { check, validationResult } = require('express-validator/check');
 const { SERVER_ERROR_MSG, EXISTING_USER_MSG } = require('../../utils/constants');
 const User = require('../../models/User');
@@ -58,7 +58,7 @@ router.post(
         },
       };
 
-      jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600 }, (err, token) => {
+      jwt.sign(payload, keys.jwtSecret, { expiresIn: 3600 }, (err, token) => {
         if (err) {
           throw err;
         }
