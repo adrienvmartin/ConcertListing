@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { deleteEvent } from '../../actions/event';
+import { deleteEvent, editEvent } from '../../actions/event';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -17,6 +17,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
+import EditModal from '../form/EditModal';
 
 const desc = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -152,6 +153,8 @@ const ListingsTable = ({ data, deleteEvent }) => {
   const [orderBy, setOrderBy] = useState('name');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [open, setOpen] = useState(false);
+  const [selectedShow, selectShowData] = useState({});
 
   const rows = [];
 
@@ -179,6 +182,15 @@ const ListingsTable = ({ data, deleteEvent }) => {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const launchEditModal = data => {
+    setOpen(true);
+    selectShowData(data);
+  };
+
+  const onClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -217,7 +229,7 @@ const ListingsTable = ({ data, deleteEvent }) => {
                         {moment(row.date).format('MMMM Do, YYYY')}
                       </TableCell>
                       <TableCell>
-                          <EditIcon />
+                        <EditIcon onClick={() => launchEditModal(row)} />
                         {'     '}
                         <DeleteIcon onClick={() => deleteEvent(row.id)} />
                       </TableCell>
@@ -236,6 +248,7 @@ const ListingsTable = ({ data, deleteEvent }) => {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+        <EditModal open={open} onClose={onClose} data={selectedShow}/>
       </Paper>
     </div>
   );
@@ -245,4 +258,7 @@ ListingsTable.propTypes = {
   data: PropTypes.array.isRequired
 };
 
-export default connect(null, { deleteEvent })(ListingsTable);
+export default connect(
+  null,
+  { deleteEvent }
+)(ListingsTable);
