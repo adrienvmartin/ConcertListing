@@ -1,10 +1,10 @@
 import 'date-fns';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { createEvent } from '../../actions/event';
-import { Paper, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider
@@ -30,7 +30,6 @@ const AddEvent = ({ createEvent, history }) => {
     bands: { headliner, openers },
     city,
     venue,
-    date
   } = formData;
 
   const onChange = e =>
