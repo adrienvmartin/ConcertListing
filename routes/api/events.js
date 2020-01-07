@@ -95,7 +95,7 @@ router.get('/venues', auth, async (req, res) => {
 });
 
 // Create new event
-router.put(
+router.post(
   '/',
   [
     auth,
