@@ -25,6 +25,7 @@ const EditModal = ({
         defaultCity={data.city}
         defaultVenue={data.venue}
         defaultDate={data.date}
+        onSubmit={onSubmit}
       />
     </Dialog>
   );

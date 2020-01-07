@@ -7,7 +7,6 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Link } from 'react-router-dom';
-import { editEvent } from '../../actions/event';
 
 const EditEvent = ({
   defaultId,
@@ -64,7 +63,7 @@ const EditEvent = ({
     <Fragment>
       <h1 className="large text-primary">Edit Event</h1>
       <small>* = required field</small>
-      <form className="form" onSubmit={e => onSubmit(e)}>
+      <form className="form" onSubmit={() => onSubmit(formData.id, formData)}>
         <div className="form-group">
           <TextField
             type="text"
@@ -121,7 +120,7 @@ const EditEvent = ({
             />
           </MuiPickersUtilsProvider>
         </div>
-        <Button variant="contained" color="primary" onClick={() => onSubmit(formData.id, formData)}>Submit</Button>
+        <Button variant="contained" color="primary">Submit</Button>
         <Link className="btn btn-light my-1" to="/dashboard">
           Dashboard
         </Link>
@@ -130,8 +129,4 @@ const EditEvent = ({
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (id, data) => dispatch(editEvent(id, data)),
-});
-
-export default connect(null, mapDispatchToProps)(EditEvent);
+export default EditEvent;
