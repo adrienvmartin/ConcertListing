@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('config/prod');
+const config = require('./prod');
 
 const db = config.get('mongoURI');
 
