@@ -45,7 +45,7 @@ const headCells = [
     id: 'instances',
     numeric: false,
     disablePadding: false,
-    label: 'Times Seen'
+    label: '# Of Events'
   }
 ];
 
