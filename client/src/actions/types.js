@@ -14,6 +14,7 @@ export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const ADD_SHOW = 'ADD_SHOW';
 export const DELETE_SHOW = 'DELETE_SHOW';
 export const GET_EVENT = 'GET_EVENT';
+export const GET_STATS = 'GET_STATS';
 export const EVENT_ERROR = 'EVENT_ERROR';
 export const LOAD_EVENTS = 'LOAD_EVENTS';
 export const LOAD_BANDS = 'LOAD_BANDS';

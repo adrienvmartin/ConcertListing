@@ -2,6 +2,7 @@ import {
   ADD_SHOW,
   DELETE_SHOW,
   GET_EVENT,
+  GET_STATS,
   EVENT_ERROR,
   LOAD_EVENTS,
   LOAD_BANDS,
@@ -28,6 +29,11 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         events: payload,
         loading: false
+      };
+    case GET_STATS:
+      return {
+        ...state,
+          stats: payload,
       };
     case LOAD_BANDS:
       return {

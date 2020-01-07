@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   ADD_SHOW,
-  DELETE_SHOW,
+  DELETE_SHOW, GET_STATS,
   LOAD_BANDS,
   LOAD_CITIES,
   LOAD_EVENTS,
@@ -17,6 +17,21 @@ export const loadEvents = () => async dispatch => {
 
     dispatch({
       type: LOAD_EVENTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err
+    });
+  }
+};
+
+export const getStats = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/events/stats');
+    dispatch({
+      type: GET_STATS,
       payload: res.data
     });
   } catch (err) {
@@ -105,6 +120,8 @@ export const createEvent = (formData, history) => async dispatch => {
     });
   }
 };
+
+
 
 export const deleteEvent = id => async dispatch => {
   try {
