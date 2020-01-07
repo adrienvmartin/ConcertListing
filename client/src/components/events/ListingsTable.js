@@ -12,6 +12,7 @@ import {
   TablePagination,
   TableContainer,
   Paper,
+  IconButton,
   makeStyles
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -216,7 +217,9 @@ const ListingsTable = ({ data, deleteEvent }) => {
                         {moment(row.date).format('MMMM Do, YYYY')}
                       </TableCell>
                       <TableCell>
+                        <IconButton>
                         <DeleteIcon onClick={() => deleteEvent(row.id)} />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   );
