@@ -2,6 +2,21 @@ import React, { Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Demo from '../events/Demo';
+import Bands from '../events/Bands';
+
+const data = [
+  {
+    _id: 1,
+    bands: {
+      headliner: "Headlining Band",
+      openers: "Opener 1, Opener 2"
+    },
+    city: "London",
+    venue: "The Venue",
+    date: "2000-01-01"
+  },
+];
 
 const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
@@ -24,16 +39,26 @@ const Landing = ({ isAuthenticated }) => {
               <Link to="/login" className="btn btn-light">
                 Login
               </Link>
+              <br />
             </div>
           </div>
         </div>
       </section>
+      <br />
+      <br />
+      <Demo data={data} />
+      <br />
+      <Bands bands={data} />
     </Fragment>
   );
 };
 
 Landing.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+};
+
+Landing.defaultProps = {
+  isAuthenticated: false,
 };
 
 const mapStateToProps = state => ({
