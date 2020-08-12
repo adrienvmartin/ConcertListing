@@ -5,19 +5,6 @@ import PropTypes from 'prop-types';
 import Demo from '../events/Demo';
 import Bands from '../events/Bands';
 
-const data = [
-  {
-    _id: 1,
-    bands: {
-      headliner: "Headlining Band",
-      openers: "Opener 1, Opener 2"
-    },
-    city: "London",
-    venue: "The Venue",
-    date: "2000-01-01"
-  },
-];
-
 const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
@@ -46,9 +33,8 @@ const Landing = ({ isAuthenticated }) => {
       </section>
       <br />
       <br />
-      <Demo data={data} />
       <br />
-      <Bands bands={data} />
+      <Demo />
     </Fragment>
   );
 };
