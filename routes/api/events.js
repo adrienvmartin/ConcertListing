@@ -1,10 +1,20 @@
 const express = require('express');
 const concert = require('../../models/Event');
+const mysql = require('mysql');
 const { SERVER_ERROR_MSG } = require('../../utils/constants');
 const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
+const config = require('../../utils/mysqlConfig');
 
 const router = express.Router();
+
+const { host, user, db } = config;
+
+const connection = mysql.createConnection({
+  host: host,
+  user: user,
+  database: db
+});
 
 router.get('/', auth, async (req, res) => {
   try {
