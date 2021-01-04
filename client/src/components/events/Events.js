@@ -23,21 +23,21 @@ const Events = ({
   return loading ? (
     <Spinner />
   ) : (
-    <Fragment>
-      <h1 className="large text-primary">Events</h1>
-      {events.length > 0 ? (
-        <Fragment>
-          Welcome to your listings page! You've been to{' '}
-          <b>{stats.eventCount} events</b> and have seen{' '}
-          <b>{stats.bands} bands</b> at <b>{stats.venues} venues</b> in{' '}
-          <b>{stats.cities} cities</b>.
+      <Fragment>
+        <h1 className="large text-primary">Events</h1>
+        {events.length > 0 ? (
+          <Fragment>
+            Welcome to your listings page! You've been to{' '}
+            <b>{stats.eventCount} events</b> and have seen{' '}
+            <b>{stats.bands} bands</b> at <b>{stats.venues} venues</b> in{' '}
+            <b>{stats.cities} cities</b>.
           <ListingsTable data={events} />
-        </Fragment>
-      ) : (
-        <Fragment>You have not created any events yet.</Fragment>
-      )}
-    </Fragment>
-  );
+          </Fragment>
+        ) : (
+            <Fragment>You have not created any events yet.</Fragment>
+          )}
+      </Fragment>
+    );
 };
 
 Events.propTypes = {
