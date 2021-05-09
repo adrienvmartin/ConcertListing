@@ -25,7 +25,7 @@ const Dashboard = ({
       <h1 className="large text-primary">Dashboard</h1>
       <p className="lead">
         <i className="fas fa-user" />
-        Welcome, {user && user.name}
+        Welcome, {user && user.name} Testing for App
       </p>
         <Fragment>
           Welcome back! Keep adding events to keep this up-to-date.
