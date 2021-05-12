@@ -25,6 +25,14 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tourName: {
+    type: String,
+    required: false,
+  },
+  tourType: {
+    type: String,
+    required: false,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
