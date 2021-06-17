@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import { connect } from 'react-redux';
 import { TextField, Button } from '@material-ui/core';
 import {
   KeyboardDatePicker,
