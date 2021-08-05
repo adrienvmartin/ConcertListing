@@ -2,8 +2,6 @@ import React, { Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Demo from '../events/Demo';
-import Bands from '../events/Bands';
 
 const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
@@ -26,15 +24,10 @@ const Landing = ({ isAuthenticated }) => {
               <Link to="/login" className="btn btn-light">
                 Login
               </Link>
-              <br />
             </div>
           </div>
         </div>
       </section>
-      <br />
-      <br />
-      <br />
-      <Demo />
     </Fragment>
   );
 };
