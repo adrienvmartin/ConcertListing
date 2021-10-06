@@ -1,6 +1,6 @@
 const express = require('express');
 const concert = require('../../models/Event');
-const { SERVER_ERROR_MSG } = require('../utils/constants');
+const { SERVER_ERROR_MSG } = require('../../utils/constants');
 
 const router = express.Router();
 
