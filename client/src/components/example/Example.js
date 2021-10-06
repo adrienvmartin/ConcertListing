@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import ListingsTable from '../events/ListingsTable';
 
 const ExamplePage = () => {
   return (
-    <div>
-      This is an example page for people to see.
-    </div>
+    <Fragment>
+      <ListingsTable />
+    </Fragment>
   )
 }
