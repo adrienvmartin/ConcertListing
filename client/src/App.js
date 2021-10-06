@@ -12,6 +12,7 @@ import Bands from './components/events/Bands';
 import Venues from './components/events/Venues';
 import Cities from './components/events/Cities';
 import AddEvent from './components/form/AddEvent';
+import { Example } from './components/example/Example';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -39,6 +40,7 @@ const App = () => {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route exact path="/example" component={Example} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/events" component={Events} />
               <PrivateRoute exact path="/bands" component={Bands} />
