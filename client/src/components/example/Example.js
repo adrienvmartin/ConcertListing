@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import ListingsTable from '../events/ListingsTable';
 
-const ExamplePage = () => {
+export const Example = () => {
   return (
     <Fragment>
-      <ListingsTable />
+      Example Page
     </Fragment>
   )
 }
