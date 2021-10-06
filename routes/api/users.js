@@ -33,16 +33,9 @@ router.post(
         return res.status(400).json({ errors: [{ msg: EXISTING_USER_MSG }] });
       }
 
-      const avatar = gravatar.url(email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm',
-      });
-
       user = new User({
         name,
         email,
-        avatar,
         password,
       });
 
