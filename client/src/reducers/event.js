@@ -24,6 +24,11 @@ const eventReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case 'LOAD_EXAMPLES':
+      return {
+        ...state,
+        examples: payload
+      };
     case LOAD_EVENTS:
       return {
         ...state,
