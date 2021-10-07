@@ -12,7 +12,7 @@ import Bands from './components/events/Bands';
 import Venues from './components/events/Venues';
 import Cities from './components/events/Cities';
 import AddEvent from './components/form/AddEvent';
-import { Example } from './components/example/Example';
+import Example from './components/example/Example';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { Provider } from 'react-redux';
 import store from './store';
