@@ -5,12 +5,10 @@ const BandSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  users: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
-    },
-  ],
+  instances: {
+    type: Number,
+    required: false,
+  }
 });
 
 const Band = mongoose.model('band', BandSchema);
