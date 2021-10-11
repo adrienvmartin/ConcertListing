@@ -11,6 +11,22 @@ import {
 } from './types';
 import { setAlert } from './alert';
 
+export const loadExamples = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/example');
+
+    dispatch({
+      type: 'LOAD_EXAMPLES',
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: LOADING_ERROR,
+      payload: err
+    })
+  }
+};
+
 export const loadEvents = () => async dispatch => {
   try {
     const res = await axios.get('/api/events');
