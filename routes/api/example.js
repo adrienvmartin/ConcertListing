@@ -8,8 +8,9 @@ const router = express.Router();
 // Find way for user to add and delete shows without permanently affecting database
 router.get('/', async (req, res) => {
   try {
-    const exampleshows = await concert.find({ user: examples }).sort({ date: 1 });
-    res.json(exampleshows);
+    const examples = await concert.find({}).sort({ date: 1 });
+    res.json(examples);
+    console.log('examples: ' + examples);
   } catch (err) {
     res.status(500).send({ msg: SERVER_ERROR_MSG })
   }
