@@ -6,6 +6,8 @@ const router = express.Router();
 
 // Find example shows - will create hard-coded database for that
 // Find way for user to add and delete shows without permanently affecting database
+
+// CREATE TEMPORARY TABLE IN MYSQL FOR THIS
 router.get('/', async (req, res) => {
   try {
     const examples = await concert.find({}).sort({ date: 1 });
