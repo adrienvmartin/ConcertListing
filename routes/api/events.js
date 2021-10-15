@@ -167,6 +167,10 @@ router.post(
         user: req.user.id,
       });
 
+      // Use conditional logic to check if band already exists, if it doesn't then create
+      // a new band through the Band model, if it does already exist then increment its instances
+      // Same with venue and city?
+
       await event.save();
 
       res.json(event);
